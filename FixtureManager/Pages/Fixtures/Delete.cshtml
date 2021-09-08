@@ -1,0 +1,52 @@
+@page
+@model FixtureManager.Pages.Fixtures.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Fixture</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Fixture.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Fixture.Date)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Fixture.IsHome)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Fixture.IsHome)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Fixture.Opponent)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Fixture.Opponent)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Fixture.Team)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Fixture.Team.DisplayName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Fixture.FixtureType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Fixture.FixtureType)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Fixture.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

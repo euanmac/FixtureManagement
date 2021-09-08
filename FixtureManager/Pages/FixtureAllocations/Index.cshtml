@@ -1,0 +1,66 @@
+@page
+@model FixtureManager.Pages.FixtureAllocations.IndexModel
+
+@{
+    ViewData["Title"] = "Fixture Allocations";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FixtureAllocation[0].Fixture.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FixtureAllocation[0].Fixture.Team.DisplayName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FixtureAllocation[0].Fixture.Opponent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FixtureAllocation[0].Start)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FixtureAllocation[0].Pitch)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FixtureAllocation[0].Referee)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.FixtureAllocation) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fixture.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fixture.Team.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fixture.Opponent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Start)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pitch.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Referee.FullName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

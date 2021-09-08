@@ -1,0 +1,51 @@
+@page
+@model FixtureManager.Pages.TeamContacts.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Team Contacts</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TeamContact[0].Team)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeamContact[0].Person)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeamContact[0].ContactType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.TeamContact) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Team.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Person.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactType)
+            </td>
+        @if (Model.Debug)
+        {
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        }
+        </tr>
+}
+    </tbody>
+</table>

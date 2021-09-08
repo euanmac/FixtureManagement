@@ -1,0 +1,73 @@
+@page
+@model FixtureManager.Pages.Teams.IndexModel
+
+@{
+    ViewData["Title"] = "Teams";
+}
+
+<h2>Teams</h2>
+
+<p>
+    @if (Model.Debug)
+    {
+        <a asp-page="Create">Create New</a>
+    }
+</p>
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Team[0].DisplayName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Team[0].League)
+            </th>
+            <th>
+                Division
+            </th>
+            <th>
+                Format
+            </th>
+            <th>
+                Contacts
+            </th>
+            @if (Model.Debug)
+            {
+        <th></th>            }
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Team) {
+        <tr>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.GroupDescription)*@
+                <a asp-page="./Details" asp-route-id="@item.Id">@item.DisplayName</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.League)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Division)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeamSize)
+            </td>
+            <td>
+                @{ foreach (var contact in item.Contacts.OrderBy(c => c.ContactType))
+                {
+                    @contact.Person.FirstName @:  @contact.Person.LastName <br />
+                }
+            }
+            </td>
+        @if (Model.Debug)
+        {
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        }
+        </tr>
+}
+    </tbody>
+</table>

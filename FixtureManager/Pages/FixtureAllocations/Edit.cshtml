@@ -1,0 +1,55 @@
+@page
+@model FixtureManager.Pages.FixtureAllocations.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Fixture Allocation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FixtureAllocation.Id" />
+            <div class="form-group">
+                <label asp-for="FixtureAllocation.Fixture" class="control-label"></label>
+                <select asp-for="FixtureAllocation.FixtureId" class="form-control" asp-items="ViewBag.FixtureId"></select>
+                <span asp-validation-for="FixtureAllocation.FixtureId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FixtureAllocation.Pitch" class="control-label"></label>
+                <select asp-for="FixtureAllocation.PitchId" class="form-control" asp-items="ViewBag.PitchId"></select>
+                <span asp-validation-for="FixtureAllocation.PitchId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FixtureAllocation.Referee" class="control-label"></label>
+                <select asp-for="FixtureAllocation.RefereeId" class="form-control" asp-items="ViewBag.RefereeId"> <option selected="selected" value=""></option></select>
+                <span asp-validation-for="FixtureAllocation.RefereeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FixtureAllocation.Start" class="control-label"></label>
+                <input asp-for="FixtureAllocation.Start" class="form-control" />
+                <span asp-validation-for="FixtureAllocation.Start" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FixtureAllocation.Duration" class="control-label"></label>
+                <select asp-for="DurationMins" class="form-control" asp-items="ViewBag.Durations"></select>
+                <span asp-validation-for="DurationMins" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href="@Model.SendingURL">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

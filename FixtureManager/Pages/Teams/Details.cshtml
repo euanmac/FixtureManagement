@@ -1,0 +1,136 @@
+@page
+@model FixtureManager.Pages.Teams.DetailsModel
+
+@{ ViewData["Title"] = "Team Details";
+}
+
+<h2>Team Details</h2>
+<div>
+
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Team.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Team.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Team.AgeGroup)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Team.AgeGroup) (@Html.DisplayFor(model => model.Team.TeamSize))
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Team.Gender)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Team.Gender)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Team.League)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Team.League) - @Html.DisplayFor(model => model.Team.Division)
+        </dd>
+        @foreach (var item in Model.Team.Contacts)
+        {
+        <dt class="col-sm-2">
+            @item.ContactType
+        </dt>
+            <dd class="col-sm-10">
+                @item.Person.FullName
+            </dd>
+        }
+    </dl>
+
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Team.Fixtures[0].Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Team.Fixtures[0].IsHome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Team.Fixtures[0].Opponent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Team.Fixtures[0].FixtureType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Team.Fixtures[0].FixtureAllocation.Start)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Team.Fixtures[0].FixtureAllocation.End)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Team.Fixtures[0].FixtureAllocation.Pitch)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Team.Fixtures[0].FixtureAllocation.Referee)
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Fixtures)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.IsHome)
+                </td>
+                <td>
+                    <a asp-page="../Fixtures/Edit" asp-route-id="@item.Id" asp-route-teamId="@item.TeamId">@item.Opponent</a>
+                    @*@Html.DisplayFor(model => item.Opponent)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.FixtureType)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.FixtureAllocation.Start)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.FixtureAllocation.End)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.FixtureAllocation.Pitch.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.FixtureAllocation.Referee.FullName)
+                </td>
+
+                <td>
+                    @*<a asp-page="./TeamContacts/Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-page="./TeamContacts/Delete" asp-route-id="@item.Id">Remove</a> |
+            <a asp-page="./TeamContacts/Create" asp-route-teamId="@item.TeamId">Add</a>*@
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.Debug)
+{
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Team.Id">Edit</a> |
+    <a asp-page="../Fixtures/Create" asp-route-teamId="@Model.Team.Id">Create Fixture</a> |
+    <a asp-page="../Fixtures/Download" asp-route-id="@Model.Team.Id">Download Fixtures</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
+}
+else
+{
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Team.Id">Edit</a> |
+    <a asp-page="../Fixtures/Create" asp-route-teamId="@Model.Team.Id">Create Fixture</a> |
+    <a asp-page="../Fixtures/Download" asp-route-id="@Model.Team.Id">Download Fixtures</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
+}

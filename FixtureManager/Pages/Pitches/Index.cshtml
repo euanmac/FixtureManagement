@@ -1,0 +1,59 @@
+﻿@page
+@model FixtureManager.Pages.Pitches.IndexModel
+@{
+    ViewData["Title"] = "Timeline";
+}
+
+<h2>Fixture Grid</h2>
+<div id='calendar'></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'resourceTimeGridDay',
+            timeFormat: 'hh:mm',
+            allDaySlot: false,
+            slotDuration: '00:15:00', /* If we want to split day time each 15minutes */
+            slotMinTime: '09:00:00', /* calendar start Timing */
+            slotMaxTime: '18:00:00',  /* calendar end Timing */
+            schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+            initialDate: '2021-09-06',
+            titleFormat: { // will produce something like "Tuesday, September 18, 2018"
+                month: 'long',
+                year: 'numeric',
+                day: 'numeric',
+                weekday: 'long'
+                },
+            hiddenDays: [1, 2, 3, 4, 5],
+            resources: @Html.Raw(Model.ResourceJSON),
+            resourceOrder: 'displayOrder',
+            events: @Html.Raw(Model.EventJSON)
+        });
+    calendar.render();
+    });
+</script>
+
+@*events: [
+    { id: '1', resourceId: '2', start: '2021-09-07T09:00:00', end: '2021-09-07T10:00:00', title: 'event 1' }]*@@*resources: [
+        { id: 'a', building: '460 Bryant', title: 'Auditorium A' },
+        { id: "7ca8cb22-4b34-4c53-aeae-d15eceeecaa1", building: '460 Bryant', title: 'Auditorium B' },
+        { id: 'c', building: '460 Bryant', title: 'Auditorium C', eventColor: 'orange' },
+        {
+            id: 'd', building: '460 Bryant', title: 'Auditorium D', children: [
+                { id: 'd1', title: 'Room D1', occupancy: 10 },
+                { id: 'd2', title: 'Room D2', occupancy: 10 }
+            ]
+        },
+        { id: 'e', building: '460 Bryant', title: 'Auditorium E' },
+        { id: 'f', building: '460 Bryant', title: 'Auditorium F', eventColor: 'red' },
+        { id: 'g', building: '564 Pacific', title: 'Auditorium G' }
+
+    ],
+    events: [
+        { Id: "a81ced9a-5cab-461c-839a-2ae4994afed2", resourceId: "7ca8cb22-4b34-4c53-aeae-d15eceeecaa1", start: "2021-09-04T09:00:00", end: "2021-09-04T09:30:00", title: 'event 1' },
+        { id: '2', resourceId: 'c', start: '2021-09-04T05:00:00', end: '2021-09-04T22:00:00', title: 'event 2' },
+        { id: '3', resourceId: 'd', start: '2021-09-04', end: '2020-09-04', title: 'event 3' },
+        { id: '4', resourceId: 'e', start: '2021-09-05T11:00:00', end: '2021-09-05T16:00:00', title: 'event 4' },
+        { id: '5', resourceId: 'f', start: '2021-09-05T12:30:00', end: '2021-09-05T14:30:00', title: 'event 5' }
+    ]*@
+    @*resources: [{ "Id": "a37dbd57-1722-4f2a-91a3-af141bb2029c", "title": "Pitch 1" }, { "Id": "2", "title": "Pitch 2" }, { "Id": "7ca8cb22-4b34-4c53-aeae-d15eceeecaa1", "title": "Pitch 3" }, { "Id": "92c2dd82-38c9-4b1a-aacf-e9f207b9dd7a", "title": "Pitch 4" }, { "Id": "9e365bfe-ddc2-4296-83df-b278a846207f", "title": "Large 3G" }, { "Id": "ff4b08c8-dc9a-4f4a-9ec1-bada343145b9", "title": "Small Astro" }, { "Id": "b89084d2-1095-428c-bc52-885f2b207c1b", "title": "Meadow" }],*@

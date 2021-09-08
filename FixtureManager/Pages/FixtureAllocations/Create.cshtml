@@ -1,0 +1,67 @@
+@page
+@model FixtureManager.Pages.FixtureAllocations.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Schedule Fixture</h1>
+
+<h4></h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model.FixtureAllocation != null)
+        {
+            <div class="form-group">
+                <input type="hidden" asp-for="FixtureAllocation.FixtureId" />
+                <label class="control-label">@Model.FixtureAllocation.Fixture.Team.DisplayName</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">@Model.FixtureAllocation.Fixture.Opponent</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">@Model.FixtureAllocation.Fixture.Date.ToShortDateString()</label>
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label asp-for="FixtureAllocation.Fixture" class="control-label"></label>
+                <select asp-for="FixtureAllocation.FixtureId" class="form-control" asp-items="Model.FixtureList"></select>
+            </div>
+        }
+            <div class="form-group">
+                <label asp-for="FixtureAllocation.Pitch" class="control-label"></label>
+                <select asp-for="FixtureAllocation.PitchId" class="form-control" asp-items="Model.PitchList"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FixtureAllocation.Referee" class="control-label"></label>
+                <select asp-for="FixtureAllocation.RefereeId" class="form-control" asp-items="Model.RefereeList"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FixtureAllocation.Start" class="control-label"></label>
+                <input asp-for="FixtureAllocation.Start" class="form-control" />
+                <span asp-validation-for="FixtureAllocation.Start" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FixtureAllocation.Duration" class="control-label"></label>
+                <select asp-for="DurationMins" class="form-control" asp-items="Model.DurationList"></select>
+                <span asp-validation-for="FixtureAllocation.Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="../Fixtures/Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
