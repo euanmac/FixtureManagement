@@ -40,12 +40,7 @@ namespace FixtureManager.Models
                     default:
                         return $"{AgeGroup} " + (Gender == Gender.Mixed ? "" : (Gender == Gender.Male ? "Boys" : "Girls"));
                 }
-
-
-
             }
-
-
         }
 
 
@@ -55,6 +50,16 @@ namespace FixtureManager.Models
             get
             {
                 return $"{GroupDescription} - {Name}";
+            }
+        }
+
+        [Display(Name = "Team Name")]
+        public string DisplayShortName
+        {
+            get
+            {
+                string shortName = Name.Replace("Thame United", ""); 
+                return $"{GroupDescription} - {shortName}";
             }
         }
 

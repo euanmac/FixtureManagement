@@ -12,11 +12,7 @@ namespace FixtureManager.Pages.Teams
 {
     public class IndexModel : PageModel
     {
-#if DEBUG
-        public bool Debug = true;
-#else
-        public bool Debug = false;
-#endif
+
         private readonly FixtureManager.Data.ApplicationDBContext _context;
 
         public IndexModel(FixtureManager.Data.ApplicationDBContext context)

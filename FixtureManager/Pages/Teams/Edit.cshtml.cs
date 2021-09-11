@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using FixtureManager.Data;
 using FixtureManager.Models;
 
 namespace FixtureManager.Pages.Teams
 {
+    [Authorize]
     public class EditModel : PageModel
     {
         private readonly FixtureManager.Data.ApplicationDBContext _context;

@@ -6,11 +6,14 @@ using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
 using HtmlAgilityPack;
 using FixtureManager.Models;
 
+
 namespace FixtureManager.Pages.Fixtures
 {
+    [Authorize]
     public class DownloadModel : PageModel
     {
         private readonly FixtureManager.Data.ApplicationDBContext _context;

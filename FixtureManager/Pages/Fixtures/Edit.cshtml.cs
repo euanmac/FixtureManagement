@@ -6,18 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using FixtureManager.Data;
 using FixtureManager.Models;
 
 namespace FixtureManager.Pages.Fixtures
 {
+
+    [Authorize]
     public class EditModel : PageModel
     {
-#if DEBUG
-        public bool Debug = true;
-#else
-        public bool Debug = false;
-#endif
+
         private readonly FixtureManager.Data.ApplicationDBContext _context;
         private readonly Guid teamId;
         public EditModel(FixtureManager.Data.ApplicationDBContext context)

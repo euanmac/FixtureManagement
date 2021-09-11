@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
 using FixtureManager.Data;
 using FixtureManager.Models;
 
 namespace FixtureManager.Pages.Teams
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         private readonly FixtureManager.Data.ApplicationDBContext _context;

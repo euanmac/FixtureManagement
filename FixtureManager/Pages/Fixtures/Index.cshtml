@@ -6,7 +6,7 @@
 <h2>Fixtures</h2>
 
 <p>
-    @if (Model.Debug)
+    @if (User.Identity.IsAuthenticated)
     {
     <a asp-page="Create">Create New</a>
     }
@@ -72,7 +72,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Fixture[0].FixtureAllocation.Referee)
             </th>
-            @if (Model.Debug)
+            @if (User.Identity.IsAuthenticated)
             {
             <th></th>
             }
@@ -87,9 +87,8 @@
             </td>
             <td>
                 @*@Html.DisplayFor(modelItem => item.Team.DisplayName)*@
-                <a asp-page="/Teams/Details" asp-route-id="@item.Team.Id">@item.Team.DisplayName</a>
+                <a asp-page="/Teams/Details" asp-route-id="@item.Team.Id">@item.Team.DisplayShortName</a>
             </td>
-
             <td>
                 @*@Html.DisplayFor(modelItem => item.IsHome)*@
                 @(item.IsHome ? "H" : "A")
@@ -114,7 +113,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FixtureAllocation.Referee.FullName)
             </td>
-            @if (Model.Debug)
+            @if (User.Identity.IsAuthenticated)
             {
             <td>
                 @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>*@

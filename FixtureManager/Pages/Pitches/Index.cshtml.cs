@@ -22,17 +22,53 @@ namespace FixtureManager.Pages.Pitches
         public string Color { get; set; }
     }
 
+    public class RecurringEvent: Event
+    {
+        public List<int> DaysOfWeek { get; set; } = new List<int>();
+        public string StartTime
+        {
+            get
+            {
+                return (DaysOfWeek.Count() > 0) ? Start.ToString("HH:mm") : "";
+            }
+        }
+
+        public string EndTime
+        {
+            get
+            {
+                return (DaysOfWeek.Count() > 0) ? End.ToString("HH:mm") : "";
+            }
+        }
+    }
+
     public class IndexModel : PageModel
     {
         private readonly FixtureManager.Data.ApplicationDBContext _context;
+
+        public List<Event> Recurring
+        {
+            get
+            {
+                return new List<Event>
+                {
+                    new RecurringEvent { Id = Guid.NewGuid(), Title= "U7, U10, U12 Training",Start=DateTime.Parse("2021-08-29T08:45"), End = DateTime.Parse("2022-05-30T10:15"), Color="black", ResourceId=Guid.Parse("9E365BFE-DDC2-4296-83DF-B278A846207F") , DaysOfWeek = {6 } },
+                    new RecurringEvent { Id = Guid.NewGuid(), Title= "U8, U9 Training",Start=DateTime.Parse("2021-08-29T10:30"), End = DateTime.Parse("2022-05-30T11:45"), Color="black", ResourceId=Guid.Parse("9E365BFE-DDC2-4296-83DF-B278A846207F") , DaysOfWeek = {6 } },
+                    new RecurringEvent { Id = Guid.NewGuid(), Title= "U8, U9 Training",Start=DateTime.Parse("2021-08-29T10:30"), End = DateTime.Parse("2022-05-30T11:45"), Color="black", ResourceId=Guid.Parse("FF4B08C8-DC9A-4F4A-9EC1-BADA343145B9") , DaysOfWeek = {6 } }
+
+                };
+
+
+            }
+        }
 
         public IndexModel(FixtureManager.Data.ApplicationDBContext context)
         {
             _context = context;
         }
 
-        public IList<Pitch> Pitch { get; set; }
-        public IList<Event> Event { get; set; }
+        public List<Pitch> Pitch { get; set; }
+        public List<Event> Event { get; set; }
         public string ResourceJSON { get; set;}
         public string EventJSON { get; set; }
 
@@ -60,6 +96,7 @@ namespace FixtureManager.Pages.Pitches
 
                 })
                 .ToListAsync();
+            Event.AddRange(Recurring);
 
             var serializeOptions = new JsonSerializerOptions
             {
@@ -67,7 +104,8 @@ namespace FixtureManager.Pages.Pitches
                 WriteIndented = true
             };
             ResourceJSON = JsonSerializer.Serialize(Pitch, serializeOptions);
-            EventJSON = JsonSerializer.Serialize(Event, serializeOptions);
+            //Have to cast to object to ensure inherted type (recurring events) are serialised properly
+            EventJSON = JsonSerializer.Serialize(Event.Cast<object>().ToList(), serializeOptions);
         }
 
         

@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 using FixtureManager.Data;
 using FixtureManager.Models;
 
 namespace FixtureManager.Pages.Fixtures
 {
+    [Authorize]
     public class CreateModel : PageModel
     {
         private readonly FixtureManager.Data.ApplicationDBContext _context;

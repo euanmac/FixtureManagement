@@ -12,11 +12,6 @@ namespace FixtureManager.Pages.People
 {
     public class IndexModel : PageModel
     {
-#if DEBUG
-        public bool Debug = true;
-#else
-        public bool Debug = false;
-#endif
         private readonly ApplicationDBContext _context;
 
         public IndexModel(ApplicationDBContext context)

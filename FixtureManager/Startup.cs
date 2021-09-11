@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Identity;
 using FixtureManager.Data;
 
 namespace FixtureManager
@@ -34,7 +35,14 @@ namespace FixtureManager
             services.AddControllers();
             services.AddDbContext<ApplicationDBContext>(options =>
                     options.UseSqlite(Configuration.GetConnectionString("ApplicatoinDBContext")));
- 
+            services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireNonAlphanumeric = false;
+            }
+     )
+         .AddEntityFrameworkStores<ApplicationDBContext>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +70,7 @@ namespace FixtureManager
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

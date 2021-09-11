@@ -5,11 +5,15 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Team Contacts</h1>
+<h2>Team Contacts</h2>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a asp-page="Create">Create New</a>
+    }
 </p>
+
 <table class="table table-condensed">
     <thead>
         <tr>
@@ -37,12 +41,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ContactType)
             </td>
-        @if (Model.Debug)
+        @if (User.Identity.IsAuthenticated)
         {
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-page="./Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a> |               
+                <a asp-page="./Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
             </td>
         }
         </tr>
