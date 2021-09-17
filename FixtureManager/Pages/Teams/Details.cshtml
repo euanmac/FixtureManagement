@@ -38,9 +38,10 @@
         <dt class="col-sm-2">
             @item.ContactType
         </dt>
-            <dd class="col-sm-10">
-                @item.Person.FullName
-            </dd>
+        <dd class="col-sm-10">
+            @item.Person.FullName
+            (<a href="mailto:@item.Person.Email">@item.Person.Email</a>)
+        </dd>
         }
     </dl>
 
