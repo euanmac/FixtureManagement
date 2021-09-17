@@ -87,7 +87,7 @@
             </td>
             <td>
                 @*@Html.DisplayFor(modelItem => item.Team.DisplayName)*@
-                <a asp-page="/Teams/Details" asp-route-id="@item.Team.Id">@item.Team.DisplayShortName</a>
+                <a asp-page="/Teams/Details" asp-route-id="@item.Team.Id">@item.Team.DisplayName</a>
             </td>
             <td>
                 @*@Html.DisplayFor(modelItem => item.IsHome)*@
@@ -118,9 +118,8 @@
             <td>
                 @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>*@
                 <a asp-page="./Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
-                |
                 <a asp-page="./Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
-                @(item.IsHome ? "|" : "")
+               
                 @if (item.IsHome && item.FixtureAllocation == null)
                 {
                     <a asp-page="../FixtureAllocations/Create" asp-route-fixtureid="@item.Id"><i class="bi bi-clock"></i></a>
