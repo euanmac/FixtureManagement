@@ -32,7 +32,7 @@ namespace FixtureManager.Controllers
                     .ThenInclude(fa => fa.Pitch)
                 .Include(f => f.FixtureAllocation)
                 .Where(f => f.FixtureAllocation != null && f.FixtureAllocation.Pitch != null)
-                .Select(f => new Event(f))
+                .Select(f => new Event(f, User.Identity.IsAuthenticated))
                 .ToListAsync();
             events.AddRange(RecurringEvent.Recurring);
             return events.Cast<object>().ToList();
