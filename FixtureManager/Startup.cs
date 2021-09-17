@@ -14,7 +14,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using FixtureManager.Data;
+using System.Text.Json;
+
 
 namespace FixtureManager
 {
@@ -30,9 +33,14 @@ namespace FixtureManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddRazorPages();
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                options.JsonSerializerOptions.WriteIndented = true;
+            });
+
+
             services.AddDbContext<ApplicationDBContext>(options =>
                     options.UseSqlite(Configuration.GetConnectionString("ApplicatoinDBContext")));
             services.AddDefaultIdentity<IdentityUser>(options =>
@@ -67,7 +75,6 @@ namespace FixtureManager
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
 
             app.UseAuthentication();
