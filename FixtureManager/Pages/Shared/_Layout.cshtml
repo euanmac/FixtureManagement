@@ -19,6 +19,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Fixtures/Index">Fixture List</a>
@@ -36,13 +37,11 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/TeamContacts/Index">Team Contacts</a>
                         </li>
                         @*<li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/FixtureAllocations/Index">Fixture Allocations</a>
-        </li>*@
-                        <partial name="_LoginPartial" />
-                    </ul>
+                <a class="nav-link text-dark" asp-area="" asp-page="/FixtureAllocations/Index">Fixture Allocations</a>
+            </li>*@
 
-                    
-                </div>                                
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
