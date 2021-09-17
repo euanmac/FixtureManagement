@@ -11,23 +11,107 @@
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'resourceTimeGridDay',
-            timeFormat: 'hh:mm',
+            @*editable: false,*@
             allDaySlot: false,
             slotDuration: '00:15:00', /* If we want to split day time each 15minutes */
             slotMinTime: '09:00:00', /* calendar start Timing */
             slotMaxTime: '18:00:00',  /* calendar end Timing */
+            expandRows: true,
             schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-            initialDate: '2021-09-06',
-            titleFormat: { // will produce something like "Tuesday, September 18, 2018"
-                month: 'long',
-                year: 'numeric',
-                day: 'numeric',
-                weekday: 'long'
+            @*initialDate: '2021-09-06',*@
+            slotLabelFormat: {
+                hour: '2-digit',
+                minute: '2-digit',
+                meridiem: false
+            },
+            datesAboveResources: true,
+            @*headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: 'resourceTimeGridDay'
+            },*@
+            views: {
+                resourceTimeGridDay: {
+                    hiddenDays: [1, 2, 3, 4, 5],
+                    titleFormat: { // will produce something like "Tuesday, September 18, 2018"
+                        month: 'long',
+                        year: 'numeric',
+                        day: 'numeric',
+                        weekday: 'long'
+                    },
                 },
-            hiddenDays: [1, 2, 3, 4, 5],
+                resourceTimeGridWeek: {
+                    hiddenDays: [],
+                    titleFormat: { // will produce something like "Tuesday, September 18, 2018"
+                        month: 'short',
+                        year: 'numeric',
+                        day: 'numeric',
+                        weekday: 'short'
+                    },
+                }
+            },
+            eventTimeFormat: { // like '14:30:00'
+                hour: '2-digit',
+                minute: '2-digit',
+                meridiem: false
+            },
+
             resources: @Html.Raw(Model.ResourceJSON),
+            @*resources: [
+                {
+                    "id": "a37dbd57-1722-4f2a-91a3-af141bb2029c",
+                    "title": "S",
+                    "displayOrder": 1
+                },
+                {
+                    "id": "8f55b18e-368e-4dad-9a56-1df8c2731702",
+                    "title": "P2",
+                    "displayOrder": 2
+                },
+                {
+                    "id": "7ca8cb22-4b34-4c53-aeae-d15eceeecaa1",
+                    "title": "P3",
+                    "displayOrder": 3
+                },
+                {
+                    "id": "92c2dd82-38c9-4b1a-aacf-e9f207b9dd7a",
+                    "title": "P4",
+                    "displayOrder": 4
+                },
+                {
+                    "id": "9e365bfe-ddc2-4296-83df-b278a846207f",
+                    "title": "L3G",
+                    "displayOrder": 5
+                },
+                {
+                    "id": "b89084d2-1095-428c-bc52-885f2b207c1b",
+                    "title": "Meadow",
+                    "displayOrder": 6
+                }],*@
+
             resourceOrder: 'displayOrder',
-            events: @Html.Raw(Model.EventJSON)
+            @*events: @Html.Raw(Model.EventJSON)*@
+            events: '/api/Event',
+
+            eventDrop: function (info) {
+                @*alert(JSON.stringify(info.event, null, 4));*@
+
+                let ev = info.event;
+                let eventData = `{"id": "${ev.id}", "title": "${ev.title}","start": "${ev.start.toJSON()}","end": "${ev.end.toJSON()}","resourceId": "${ev.getResources()[0].id}"}`
+                $.ajax({
+                    url: 'https://localhost:5001/api/Event/' + info.event.id,
+                    type: 'PUT',
+                    dataType: 'application/json',
+                    contentType: 'application/json',
+                    data: eventData,
+                    success: function (data, textStatus, xhr) {
+                        console.log(data);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        info.revert();
+                    }
+                });  
+            }
         });
     calendar.render();
     });
