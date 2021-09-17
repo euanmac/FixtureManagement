@@ -46,6 +46,7 @@ namespace FixtureManager.Controllers
             _context = context;
         }
 
+
         // GET: api/Fixture
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FixtureResponse>>> GetFixture()
