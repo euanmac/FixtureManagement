@@ -99,7 +99,7 @@
                 let ev = info.event;
                 let eventData = `{"id": "${ev.id}", "title": "${ev.title}","start": "${ev.start.toJSON()}","end": "${ev.end.toJSON()}","resourceId": "${ev.getResources()[0].id}"}`
                 $.ajax({
-                    url: 'https://localhost:5001/api/Event/' + info.event.id,
+                    url: '/api/Event/' + info.event.id,
                     type: 'PUT',
                     dataType: 'application/json',
                     contentType: 'application/json',
