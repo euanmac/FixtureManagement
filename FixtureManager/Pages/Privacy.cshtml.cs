@@ -11,6 +11,7 @@ namespace FixtureManager.Pages
     public class PrivacyModel : PageModel
     {
         private readonly ILogger<PrivacyModel> _logger;
+        public string Debug;
 
         public PrivacyModel(ILogger<PrivacyModel> logger)
         {
@@ -19,6 +20,8 @@ namespace FixtureManager.Pages
 
         public void OnGet()
         {
+            Debug = TimeZoneInfo.Local.ToString() + "\n";
+            Debug += DateTime.Now;
         }
     }
 }

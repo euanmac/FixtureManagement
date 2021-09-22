@@ -22,13 +22,16 @@ namespace FixtureManager.Models
         {
             this.Id = fixture.Id;
             this.Title = $"{fixture.Team.DisplayName} v {fixture.Opponent}";
-            this.Start = fixture.FixtureAllocation.Start.ToUniversalTime();
-            this.End = fixture.FixtureAllocation.End.ToUniversalTime();
+            //this.Start = fixture.FixtureAllocation.Start.ToUniversalTime();
+            //this.End = fixture.FixtureAllocation.End.ToUniversalTime();
+            this.Start = fixture.FixtureAllocation.Start;
+            this.End = fixture.FixtureAllocation.End;
             this.ResourceId = fixture.FixtureAllocation.PitchId.Value;
             this.Color = fixture.Team.Colour;
             this.StartEditable = Editable;
             this.DurationEditable = false;
             this.ResourceEditable = Editable;
+
         }
 
         public Event(Fixture fixture) : this (fixture, false)
@@ -77,6 +80,19 @@ namespace FixtureManager.Models
                         new RecurringEvent { Id = Guid.NewGuid(), Title= "U7, U10, U12 Training",Start=DateTime.Parse("2021-08-29T08:45"), End = DateTime.Parse("2022-05-30T10:15"), Color="black", ResourceId=Guid.Parse("9E365BFE-DDC2-4296-83DF-B278A846207F") , DaysOfWeek = {6 } },
                         new RecurringEvent { Id = Guid.NewGuid(), Title= "U8, U9 Training",Start=DateTime.Parse("2021-08-29T10:30"), End = DateTime.Parse("2022-05-30T11:45"), Color="black", ResourceId=Guid.Parse("9E365BFE-DDC2-4296-83DF-B278A846207F") , DaysOfWeek = {6 } },
                         new RecurringEvent { Id = Guid.NewGuid(), Title= "U8, U9 Training",Start=DateTime.Parse("2021-08-29T10:30"), End = DateTime.Parse("2022-05-30T11:45"), Color="black", ResourceId=Guid.Parse("FF4B08C8-DC9A-4F4A-9EC1-BADA343145B9") , DaysOfWeek = {6 } }
+
+                    };
+
+            }
+        }
+
+        public static List<Event> Booking
+        {
+            get
+            {
+                return new List<Event>
+                    {
+                        new Event { Id = Guid.NewGuid(), Title= "Over 60s",Start=DateTime.Parse("2021-11-21T14:00"), End = DateTime.Parse("2021-11-21T16:00"), Color="black", ResourceId=Guid.Parse("9E365BFE-DDC2-4296-83DF-B278A846207F"), DurationEditable=false, ResourceEditable=false, StartEditable=false }
 
                     };
 
