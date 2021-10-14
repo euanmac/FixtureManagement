@@ -97,7 +97,7 @@
                 @Html.DisplayFor(modelItem => item.Opponent)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FixtureType)
+                @(item.FixtureType.ToString().Substring(0,1) )
             </td>
             <td>
                 @if (item.FixtureAllocation != null)

@@ -34,8 +34,20 @@ namespace FixtureManager.Controllers
                 .Where(f => f.FixtureAllocation != null && f.FixtureAllocation.Pitch != null)
                 .Select(f => new Event(f, User.Identity.IsAuthenticated))
                 .ToListAsync();
-            events.AddRange(RecurringEvent.Recurring);
-            events.AddRange(RecurringEvent.Booking);
+
+            List<Event> eventBookingSingle = _context.Booking
+                .Where(b => !b.IsRecurring)
+                .Select(b => new Event(b))
+                .ToList();
+
+
+            List<RecurringEvent> eventBookingRecurring = _context.Booking
+                .Where(b => b.IsRecurring)
+                .Select(b => new RecurringEvent(b))
+                .ToList();
+
+            events.AddRange(eventBookingRecurring);
+            events.AddRange(eventBookingSingle);
             return events.Cast<object>().ToList();
         }
 
@@ -71,7 +83,6 @@ namespace FixtureManager.Controllers
                     .FirstAsync(fa => fa.FixtureId == id);
 
                 allocation.Start = @event.Start.ToLocalTime();
-                //allocation.Start = @event.Start;
                 allocation.Duration = @event.End - @event.Start;
                 allocation.PitchId = @event.ResourceId;
                 _context.Attach(allocation).State = EntityState.Modified;

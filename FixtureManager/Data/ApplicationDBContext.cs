@@ -18,6 +18,7 @@ namespace FixtureManager.Data
         public DbSet<Fixture> Fixture { get; set; }
         public DbSet<FixtureAllocation> FixtureAlloctation { get; set; }
         public DbSet<TeamContact> TeamContact { get; set; }
+        public DbSet<Booking> Booking { get; set; }
 
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options)
             : base(options)

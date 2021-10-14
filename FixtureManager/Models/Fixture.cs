@@ -16,12 +16,14 @@ namespace FixtureManager.Models
         public string Opponent { get; set; }
         [Display(Name = "Type")]
         public FixtureType FixtureType { get; set; }
-
+       
         //Navigation properties
         [Ignore]
         public Team Team { get; set; }
         [Ignore]
         public FixtureAllocation FixtureAllocation { get; set; }
+
+   
 
     }
 
@@ -42,12 +44,11 @@ namespace FixtureManager.Models
 
     public enum FixtureType
     {
-        [Display(Name = "F")]
         Friendly,
-        [Display(Name = "L")]
         League,
-        [Display(Name = "C")]
         Cup,
+        Cancelled,
+        Postponed,
         Other
     }
 

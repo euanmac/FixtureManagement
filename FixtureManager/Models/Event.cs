@@ -38,6 +38,19 @@ namespace FixtureManager.Models
         {
 
         }
+
+        public Event(Booking booking)
+        {
+            this.Id = booking.Id;
+            this.Title = booking.Title;
+            this.Start = booking.Start;
+            this.End = booking.End;
+            this.ResourceId = booking.PitchId;
+            this.Color = "black";
+            this.StartEditable = false;
+            this.DurationEditable = false;
+            this.ResourceEditable = false;
+        }
     }
 
     public class RecurringEvent : Event
@@ -49,12 +62,22 @@ namespace FixtureManager.Models
             this.StartEditable = false;
         }
 
-        public RecurringEvent() : base()
+        public RecurringEvent(Booking booking) : base(booking)
         {
-
         }
 
-        public List<int> DaysOfWeek { get; set; } = new List<int>();
+        public RecurringEvent() : base()
+        {
+        }
+
+        public List<int> DaysOfWeek
+        {
+            get
+            {
+                return new List<int> { (int)Start.DayOfWeek};
+            }
+        }
+
         public string StartTime
         {
             get
@@ -71,15 +94,33 @@ namespace FixtureManager.Models
             }
         }
 
+
+
+        public DateTime StartRecur
+        {
+            get
+            {
+                return Start;
+            }
+        }
+
+        public DateTime EndRecur
+        {
+            get
+            {
+                return End;
+            }
+        }
+
         public static List<RecurringEvent> Recurring
         {
             get
             {
                 return new List<RecurringEvent>
                     {
-                        new RecurringEvent { Id = Guid.NewGuid(), Title= "U7, U10, U12 Training",Start=DateTime.Parse("2021-08-29T08:45"), End = DateTime.Parse("2022-05-30T10:15"), Color="black", ResourceId=Guid.Parse("9E365BFE-DDC2-4296-83DF-B278A846207F") , DaysOfWeek = {6 } },
-                        new RecurringEvent { Id = Guid.NewGuid(), Title= "U8, U9 Training",Start=DateTime.Parse("2021-08-29T10:30"), End = DateTime.Parse("2022-05-30T11:45"), Color="black", ResourceId=Guid.Parse("9E365BFE-DDC2-4296-83DF-B278A846207F") , DaysOfWeek = {6 } },
-                        new RecurringEvent { Id = Guid.NewGuid(), Title= "U8, U9 Training",Start=DateTime.Parse("2021-08-29T10:30"), End = DateTime.Parse("2022-05-30T11:45"), Color="black", ResourceId=Guid.Parse("FF4B08C8-DC9A-4F4A-9EC1-BADA343145B9") , DaysOfWeek = {6 } }
+                        new RecurringEvent { Id = Guid.NewGuid(), Title= "U7, U10, U12 Training",Start=DateTime.Parse("2021-08-28T08:45"), End = DateTime.Parse("2022-05-30T10:15"), Color="black", ResourceId=Guid.Parse("9E365BFE-DDC2-4296-83DF-B278A846207F") , DaysOfWeek = {6 } },
+                        new RecurringEvent { Id = Guid.NewGuid(), Title= "U8, U9 Training",Start=DateTime.Parse("2021-08-28T10:30"), End = DateTime.Parse("2022-05-30T11:45"), Color="black", ResourceId=Guid.Parse("9E365BFE-DDC2-4296-83DF-B278A846207F") , DaysOfWeek = {6 } },
+                        new RecurringEvent { Id = Guid.NewGuid(), Title= "U8, U9 Training",Start=DateTime.Parse("2021-08-28T10:30"), End = DateTime.Parse("2022-05-30T11:45"), Color="black", ResourceId=Guid.Parse("FF4B08C8-DC9A-4F4A-9EC1-BADA343145B9") , DaysOfWeek = {6 } }
 
                     };
 
