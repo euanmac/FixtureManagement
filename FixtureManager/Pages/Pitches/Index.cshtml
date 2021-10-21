@@ -16,9 +16,9 @@
 
             @*editable: false,*@
             allDaySlot: false,
-            slotDuration: '00:15:00', /* If we want to split day time each 15minutes */
+            slotDuration: '00:30:00', /* If we want to split day time each 15minutes */
             slotMinTime: '09:00:00', /* calendar start Timing */
-            slotMaxTime: '18:00:00',  /* calendar end Timing */
+            slotMaxTime: '23:00:00',  /* calendar end Timing */
             expandRows: true,
             schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
             @*initialDate: '2021-09-06',*@
@@ -132,7 +132,8 @@
                         info.revert();
                     }
                 });  
-            }
+            },
+
         });
     calendar.render();
     });

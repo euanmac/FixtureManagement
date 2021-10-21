@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using HtmlAgilityPack;
 
 namespace FixtureManager.Models
 {
@@ -108,7 +110,75 @@ namespace FixtureManager.Models
         //Navigation
         public List<Fixture> Fixtures { get; set; }
         public List<TeamContact> Contacts { get; set; }
+
+
+
+        private IList<DownloadFixture> GetFixturesFromFullTime()
+
+        {
+
+            List<(Fixture, bool)> fixtureList = new List<(Fixture, bool)>();
+            List<DownloadFixture> dFixtures = new List<DownloadFixture>();
+
+            //Get fixtures from FulLTime
+            if (FullTimeTeamId == null || FullTimeLeagueId == null)
+            {
+                return dFixtures;
+            }
+
+            var url = $"https://fulltime.thefa.com/displayTeam.html?divisionseason={FullTimeLeagueId}&teamID={FullTimeTeamId}";
+            HtmlWeb web = new HtmlWeb();
+            var htmlDoc = web.Load(url);
+
+            var rows = htmlDoc.DocumentNode.SelectNodes("//table/tbody/tr");
+            int id = 0;
+
+            try
+            {
+                foreach (var row in rows)
+                {
+                    string type = row.SelectSingleNode("./td[1]").InnerText.Trim();
+                    string date = row.SelectSingleNode("./td[2]").InnerText.Trim().Substring(0, 8);
+                    string home = HtmlEntity.DeEntitize(row.SelectSingleNode("./td[3]").InnerText.Trim());
+                    string away = HtmlEntity.DeEntitize(row.SelectSingleNode("./td[7]").InnerText.Trim());
+                    string link = row.SelectSingleNode("./td[3]/a").Attributes[0].Value;
+                    int index = link.IndexOf("=") + 1;
+                    string fixtureId = link.Substring(index, link.Length - index);
+
+
+                    DateTime fdate = DateTime.Parse(date, new CultureInfo("en-GB"));
+                    bool isHome = home.ToLower().IndexOf("thame ") >= 0;
+                    string opponent = isHome ? away : home;
+
+                    FixtureType ftype = type switch
+                    {
+                        "L" => FixtureType.League,
+                        "Cup" => FixtureType.Cup,
+                        "F" => FixtureType.Friendly,
+                        _ => FixtureType.Other
+                    };
+
+                    var fixture = new Fixture { Date = fdate, IsHome = isHome, Opponent = opponent, TeamId = Id, Team = this, FixtureType = ftype, Id = Guid.NewGuid() };
+                    var downloadFixture = new DownloadFixture { Id = id, Date = fdate, IsHome = isHome, Opponent = opponent, FixtureType = ftype, Add = true };
+                    id++;
+
+                    fixtureList.Add((fixture, true));
+                    dFixtures.Add(downloadFixture);
+                }
+
+            }
+
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error getting fixtures for team {Id}");
+            }
+
+            return dFixtures;
+
+        }
+
     }
+
 
     public enum AgeGroup
     {
@@ -161,4 +231,8 @@ namespace FixtureManager.Models
     {
         One=1, Two=2, Three=3, Four=4, Five=5, Six=6,  Red=20, White=21, Blue=22, Black=23, Green=24, Yellow=25, West = 70, Other =100
     }
+
+
+
+    
 }

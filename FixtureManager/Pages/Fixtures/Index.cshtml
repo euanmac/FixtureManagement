@@ -69,9 +69,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Fixture[0].FixtureAllocation.Pitch)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Fixture[0].FixtureAllocation.Referee)
-            </th>
+            </th>*@
             @if (User.Identity.IsAuthenticated)
             {
             <th></th>
@@ -110,9 +110,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FixtureAllocation.Pitch.Name)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.FixtureAllocation.Referee.FullName)
-            </td>
+            </td>*@
             @if (User.Identity.IsAuthenticated)
             {
             <td>

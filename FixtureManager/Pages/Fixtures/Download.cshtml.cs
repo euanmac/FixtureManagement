@@ -108,12 +108,13 @@ namespace FixtureManager.Pages.Fixtures
                 {
                     string type = row.SelectSingleNode("./td[1]").InnerText.Trim();
                     string date = row.SelectSingleNode("./td[2]").InnerText.Trim().Substring(0, 8);
-                    string home = row.SelectSingleNode("./td[3]").InnerText.Trim();
-                    string away = row.SelectSingleNode("./td[7]").InnerText.Trim();
+                    string home = HtmlEntity.DeEntitize(row.SelectSingleNode("./td[3]").InnerText.Trim());
+                    string away = HtmlEntity.DeEntitize(row.SelectSingleNode("./td[7]").InnerText.Trim());
                     string link = row.SelectSingleNode("./td[3]/a").Attributes[0].Value;
                     int index = link.IndexOf("=") + 1;
                     string fixtureId = link.Substring(index, link.Length - index);
 
+                    
                     DateTime fdate = DateTime.Parse(date, new CultureInfo("en-GB"));
                     bool isHome = home.ToLower().IndexOf("thame ") >= 0;
                     string opponent = isHome ? away : home;
