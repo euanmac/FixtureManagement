@@ -1,0 +1,60 @@
+@page
+@model FixtureManager.Pages.Bookings.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Booking</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Booking.Id" />
+            <div class="form-group">
+                <label asp-for="Booking.Title" class="control-label"></label>
+                <input asp-for="Booking.Title" class="form-control" />
+                <span asp-validation-for="Booking.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Booking.Start" class="control-label"></label>
+                <input asp-for="Booking.Start" class="form-control" />
+                <span asp-validation-for="Booking.Start" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Booking.End" class="control-label"></label>
+                <input asp-for="Booking.End" class="form-control" />
+                <span asp-validation-for="Booking.End" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="Booking.Pitch" class="control-label"></label>
+                <select asp-for="Booking.Pitch.Name" class="form-control" asp-items="Model.PitchList"></select>
+                <span asp-validation-for="Booking.Pitch.Name" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="Booking.Pitch" class="control-label"></label>
+                <select asp-for="Booking.PitchId" class="form-control" asp-items="ViewBag.PitchId"></select>
+                <span asp-validation-for="Booking.PitchId" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Booking.IsRecurring" /> @Html.DisplayNameFor(model => model.Booking.IsRecurring)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
