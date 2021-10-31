@@ -60,8 +60,15 @@ namespace FixtureManager.Models
         {
             get
             {
-                string shortName = Name.Replace("Thame United", ""); 
-                return $"{GroupDescription} - {shortName}";
+                if (Name != null)
+                {
+                    string shortName = Name.Replace("Thame United", "");
+                    return $"{GroupDescription} - {shortName}";
+                }
+                else
+                {
+                    return "";
+                }
             }
         }
 

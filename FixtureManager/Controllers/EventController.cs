@@ -142,3 +142,9 @@ namespace FixtureManager.Controllers
 
     }
 }
+
+
+
+//git remote add set-url https://euanmac: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@https://github.com/euanmac/FixtureManagement.git
+
+//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
