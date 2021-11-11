@@ -31,11 +31,20 @@ namespace FixtureManager.Pages.Fixtures
             Guid teamGuid = Guid.Empty;
             if (Guid.TryParse(teamId, out teamGuid)) {
                 ForTeam = _context.Team.First(t => t.Id == teamGuid);
-                Fixture = new Fixture { TeamId = ForTeam.Id, Date=DateTime.Now.AddDays(7), FixtureType=FixtureType.League };
+
+                //Get max date if there is one and add 7 days. Otherwise default to today
+                DateTime maxDate = _context.Fixture
+                     .Where(f => f.TeamId == teamGuid)
+                     .Select(f => f.Date.AddDays(7))
+                     .Max(f => (DateTime?)f.Date) ?? DateTime.Now.Date;
+                
+              Fixture = new Fixture { TeamId = ForTeam.Id, Date= maxDate, FixtureType=FixtureType.League };
             }
             
             return Page();
         }
+
+
 
         [BindProperty]
         public Fixture Fixture { get; set; }
