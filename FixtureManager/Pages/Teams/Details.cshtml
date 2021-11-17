@@ -28,24 +28,32 @@
             @Html.DisplayFor(model => model.Team.Gender)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Team.League)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Team.League) - @Html.DisplayFor(model => model.Team.Division)
-        </dd>
-        @foreach (var item in Model.Team.Contacts)
-        {
-        <dt class="col-sm-2">
-            @item.ContactType
-        </dt>
-        <dd class="col-sm-10">
-            @item.Person.FullName
-            (<a href="mailto:@item.Person.Email">@item.Person.Email</a>)
-        </dd>
-        }
-    </dl>
+            @Html.DisplayNameFor(model => model.Team.League)  
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.Team.FixtureURL.Length > 0)
+                {
+                    <a href="@Model.Team.FixtureURL"> @Html.DisplayFor(model => model.Team.League) - @Html.DisplayFor(model => model.Team.Division) </a>
+                } else
+                {
+                    <div>@Html.DisplayFor(model => model.Team.League) - @Html.DisplayFor(model => model.Team.Division)</div>
+                }
+            </dd>
+            @foreach (var item in Model.Team.Contacts)
+            {
+            <dt class="col-sm-2">
+                @item.ContactType
+            </dt>
+            <dd class="col-sm-10">
+                @item.Person.FullName
+                (<a href="mailto:@item.Person.Email">@item.Person.Email</a>)
+            </dd>}
 
-    <table class="table table-condensed">
+
+        </dl>
+   
+
+       <table class="table table-condensed">
         <thead>
             <tr>
                 <th>
@@ -78,7 +86,7 @@
         </thead>
         <tbody>
             @foreach (var item in Model.Fixtures)
-            {
+        {
             <tr>
                 <td>
                     @Html.DisplayFor(model => item.Date)
