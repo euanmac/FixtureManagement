@@ -114,6 +114,22 @@ namespace FixtureManager.Models
             }
         }
 
+        public string FixtureURL
+        {
+            get
+            {
+                if (FullTimeLeagueId.Length ==0 || FullTimeTeamId.Length == 0)
+                {
+                    return "";
+                }
+                else
+                {
+                    return $"https://fulltime.thefa.com/displayTeam.html?divisionseason={FullTimeLeagueId}&teamID={FullTimeTeamId}";
+                }
+
+            }
+        }
+
         //Navigation
         public List<Fixture> Fixtures { get; set; }
         public List<TeamContact> Contacts { get; set; }
@@ -211,8 +227,12 @@ namespace FixtureManager.Models
         [Display(Name = "Oxfordshire Girls Football League")]
         OxGirls,
         [Display(Name = "Junior Premier League")]
-        JPL
-
+        JPL,
+        [Display(Name = "Uhlsport Hellenic League")]
+        UHL,
+        [Display(Name = "Aylesbury and District Football League")]
+        ADL
+       
     }
 
     public enum TeamSize
@@ -227,9 +247,6 @@ namespace FixtureManager.Models
         _11v11
     }
 
-
-    
-
     public enum Gender
     {
        Male, Female, Mixed
@@ -238,8 +255,6 @@ namespace FixtureManager.Models
     {
         One=1, Two=2, Three=3, Four=4, Five=5, Six=6,  Red=20, White=21, Blue=22, Black=23, Green=24, Yellow=25, West = 70, Other =100
     }
-
-
 
     
 }
