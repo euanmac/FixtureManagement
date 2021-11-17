@@ -7,9 +7,6 @@
 <h2>Download Fixtures</h2>
 
 <form method="post">
-    @*<p>
-            <a asp-page="Create">Create New</a>
-        </p>*@
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-primary" />
     </div>
@@ -28,7 +25,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.DownloadFixtures[0].FixtureType)
                 </th>
-                <th>Select</th>
+                <th><input id="select-all" value="true" checked type="checkbox" /></th>
             </tr>
         </thead>
         <tbody>
@@ -58,7 +55,7 @@
                         <!--<a asp-page="./Edit" asp-route-id="@fixture.Id">Edit</a> |-->
                         @*<a asp-page="./Details" asp-route-id="@item.Id">Details</a>*@
                         <!--<a asp-page="./Delete" asp-route-id="@fixture.Id">Delete</a>-->
-                        <input name="DownloadFixtures[@fixture.Id].Add" value="true" checked type ="checkbox"/>
+                        <input name="DownloadFixtures[@fixture.Id].Add" value="true" checked type="checkbox" class="add-fixture"/>
 
                     </td>
 
@@ -67,3 +64,13 @@
         </tbody>
     </table>
 </form>
+
+@section Scripts {
+<script>
+    $(document).ready(function () {
+        $("#select-all").click(function () {
+            $(".add-fixture").prop('checked', this.checked);
+        })
+    });
+</script>
+}
