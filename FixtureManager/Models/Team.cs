@@ -118,7 +118,7 @@ namespace FixtureManager.Models
         {
             get
             {
-                if (FullTimeLeagueId.Length ==0 || FullTimeTeamId.Length == 0)
+                if (String.IsNullOrEmpty(FullTimeLeagueId) || String.IsNullOrEmpty(FullTimeTeamId))
                 {
                     return "";
                 }

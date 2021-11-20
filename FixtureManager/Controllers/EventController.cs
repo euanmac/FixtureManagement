@@ -24,7 +24,7 @@ namespace FixtureManager.Controllers
 
         // GET: api/Event
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Object>>> GetEvent()
+        public async Task<ActionResult<IEnumerable<Object>>> GetEvent(Guid? eventId, Guid? resourceId)
         {
             List<Event> events = await _context.Fixture
                 .Include(f => f.Team)
@@ -48,24 +48,111 @@ namespace FixtureManager.Controllers
 
             events.AddRange(eventBookingRecurring);
             events.AddRange(eventBookingSingle);
+
+            if (eventId != null)
+            {
+                events = events.Where(e => e.Id == eventId).ToList();
+            }
+
             return events.Cast<object>().ToList();
+        }
+
+
+        private async Task<List<Event>> GetEventList(Guid? eventId, Guid? resourceId)
+        {
+            //Get fixtures
+            IQueryable<Fixture> eventFixture = _context.Fixture
+                .Include(f => f.Team)
+                .Include(f => f.FixtureAllocation)
+                    .ThenInclude(fa => fa.Pitch)
+                .Include(f => f.FixtureAllocation)
+                .Where(f => f.FixtureAllocation != null && f.FixtureAllocation.Pitch != null);
+                
+            if (eventId != null)
+            {
+                eventFixture = eventFixture.Where(f => f.Id == eventId);
+            }
+            if (resourceId != null)
+            {
+                eventFixture = eventFixture.Where(e => e.FixtureAllocation.PitchId == resourceId);
+            }
+
+            List<Event> events = await eventFixture.Select(f => new Event(f, User.Identity.IsAuthenticated))
+                .ToListAsync();
+
+            //Get single event bookings
+            IQueryable<Booking> eventBookingSingle = _context.Booking
+                .Where(b => !b.IsRecurring);
+
+            if (eventId != null)
+            {
+                eventBookingSingle = eventBookingSingle.Where(b => b.Id == eventId);
+            }
+            if (resourceId != null)
+            {
+                eventBookingSingle = eventBookingSingle.Where(b => b.PitchId == resourceId);
+            }
+            events.AddRange(await eventBookingSingle
+                .Select(b => new RecurringEvent(b))
+                .ToListAsync());
+
+
+            //Get recurring bookings
+            IQueryable<Booking> eventBookingRecurring = _context.Booking
+                .Where(b => b.IsRecurring);
+
+            if (eventId != null)
+            {
+                eventBookingRecurring = eventBookingRecurring.Where(b => b.Id == eventId);
+            }
+            if (resourceId != null)
+            {
+                eventBookingRecurring = eventBookingRecurring.Where(b => b.PitchId == resourceId);
+            }
+            events.AddRange(await eventBookingRecurring
+                .Select(b => new RecurringEvent(b))
+                .ToListAsync());
+
+
+            return events;
+
         }
 
         // GET: api/Event/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Event>> GetEvent(Guid id)
+        public async Task<ActionResult<IEnumerable<Object>>> GetEvents(Guid id)
         {
-            var fixture = await _context.Fixture.
-                Include((f => f.FixtureAllocation))
-                .FirstAsync(f => f.Id == id);
-
-            if (fixture == null)
-            {
-                return NotFound();
-            }
-
-            return new Event(fixture);
+            IList<Event> events = await GetEventList(id, null);
+            return events.Cast<object>().ToList();
+   
         }
+
+
+        // GET: api/Event/Resource/5
+        [HttpGet("Resource/{resourceid:Guid}")]
+        public async Task<ActionResult<IEnumerable<Object>>> GetEventsByResource(Guid resourceid)
+        {
+            IList<Event> events = await GetEventList(null, resourceid);
+            return events.Cast<object>().ToList();
+
+        }
+
+        //[HttpGet("Resource/{id:Guid}")]
+        //public async Task<ActionResult<Event>> GetEventByResource(Guid resourceid)
+        //{
+        //    var fixture = await _context.Fixture.
+        //        Include((f => f.FixtureAllocation))
+        //        .FirstAsync(f => f.Id == resourceid);
+
+        //    if (fixture == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return new Event(fixture);
+        //}
+
+
 
         // PUT: api/Event/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
