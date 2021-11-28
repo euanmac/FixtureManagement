@@ -4,24 +4,23 @@
     ViewData["Title"] = "Timeline";
 }
 
-<h2>Fixture Grid</h2>
+<h2>@Model.Title</h2>
 <div id='calendar'></div>
 <script>
 
     document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'resourceTimeGridDay',
-            initialDate: nextWeekdayDate(new Date(), 6),
+            initialView: @Html.Raw(Model.InitialView),
+            initialDate: @Html.Raw(Model.InitialDate),
 
-            @*editable: false,*@
             allDaySlot: false,
             slotDuration: '00:30:00', /* If we want to split day time each 15minutes */
             slotMinTime: '09:00:00', /* calendar start Timing */
             slotMaxTime: '23:00:00',  /* calendar end Timing */
             expandRows: true,
             schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
-            @*initialDate: '2021-09-06',*@
+
             slotLabelFormat: {
                 hour: '2-digit',
                 minute: '2-digit',
@@ -31,8 +30,22 @@
             headerToolbar: {
                 left: 'title',
                 center: '',
-                right: 'today prevSat,prev,next,nextSat'
+                right: @Html.Raw(Model.HeaderButtons)
             },
+            navLinkDayClick: function (date, jsEvent) {
+                dateParam = date.toJSON().split("T")[0];
+                document.location.href = "/pitches?date=" + dateParam;
+            },
+            resourceLabelContent: function (arg) {
+                console.log(arg)
+                dateParam = arg.date.toJSON().split("T")[0];
+                let link = document.createElement("a");
+                link.innerHTML = arg.resource.title;
+                link.href = "/pitches?pitchId=" + arg.resource.id + "&date=" + dateParam;
+                let arrayOfDomNodes = [link];
+                return { domNodes: arrayOfDomNodes };
+            },
+            navLinks: true,
             customButtons: {
                 nextSat: {
                 icon: 'fc-icon-chevrons-right',
@@ -49,7 +62,7 @@
                     }
                 }
             },
- 
+
             views: {
                 resourceTimeGridDay: {
                     @*hiddenDays: [1, 2, 3, 4, 5],*@
@@ -112,7 +125,7 @@
 
             resourceOrder: 'displayOrder',
             @*events: @Html.Raw(Model.EventJSON)*@
-            events: '/api/Event',
+            events: @Html.Raw(Model.EventURL),
 
             eventDrop: function (info) {
                 @*alert(JSON.stringify(info.event, null, 4));*@
@@ -131,7 +144,7 @@
                     error: function (xhr, textStatus, errorThrown) {
                         info.revert();
                     }
-                });  
+                });
             },
 
         });

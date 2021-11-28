@@ -24,8 +24,13 @@ namespace FixtureManager.Pages.Pitches
         public List<Event> Event { get; set; }
         public string ResourceJSON { get; set;}
         public string EventJSON { get; set; }
+        public string InitialView { get; set; }
+        public string EventURL { get; set; }
+        public string Title { get; set; }
+        public string HeaderButtons { get; set; }
+        public string InitialDate { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(Guid? pitchId, DateTime? date)
         {
             Pitch = await _context.Pitch
                 .Where(p => p.DisplayOrder > 0)
@@ -51,6 +56,15 @@ namespace FixtureManager.Pages.Pitches
             ResourceJSON = JsonSerializer.Serialize(Pitch, serializeOptions);
             //Have to cast to object to ensure inherted type (recurring events) are serialised properly
             EventJSON = JsonSerializer.Serialize(Event.Cast<object>().ToList(), serializeOptions);
+
+            bool showDayView = (pitchId == null);
+
+            EventURL = showDayView ? "'/api/Event'" : $"'/api/Event/Resource/{pitchId}'";           
+            InitialView = showDayView ? "'resourceTimeGridDay'" : "'timeGridWeek'";
+            Title = showDayView ? "Fixture Grid" : $"{Pitch.Where(p => p.Id == pitchId).FirstOrDefault().Name}";
+            HeaderButtons = showDayView ? "'today prevSat,prev,next,nextSat'" : "'today prev,next'";
+
+            InitialDate = $"'{(date ?? DateTime.Now).ToString("yyyy-MM-dd")}'";
         }
 
         
