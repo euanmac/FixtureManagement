@@ -9,6 +9,9 @@ using FixtureManager.Data;
 using FixtureManager.Pages.Pitches;
 using FixtureManager.Models;
 
+//git remote set-url --add https://euanmac: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c@github.com/euanmac/FixtureManagement.git
+//git remote add origin https://euanmac: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c@github.com/euanmac/FixtureManagement.git
+
 namespace FixtureManager.Controllers
 {
     [Route("api/[controller]")]

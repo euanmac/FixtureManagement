@@ -23,6 +23,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.Person[0].LastName)
             </th>
+        @if (User.Identity.IsAuthenticated)
+        {
             <th>
                 @Html.DisplayNameFor(model => model.Person[0].Tel)
             </th>
@@ -32,10 +34,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.Person[0].IsRef)
             </th>
-            @if (User.Identity.IsAuthenticated)
-            {
             <th></th>
-            }
+        }
 
         </tr>
     </thead>
@@ -48,6 +48,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
+        @if (User.Identity.IsAuthenticated)
+        { 
             <td>
                 @Html.DisplayFor(modelItem => item.Tel)
             </td>
@@ -57,8 +59,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.IsRef)
             </td>
-            @if (User.Identity.IsAuthenticated)
-            { 
+
         <td>
             <a asp-page="./Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a> |
             <a asp-page="./Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
