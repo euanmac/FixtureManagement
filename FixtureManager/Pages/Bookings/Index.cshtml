@@ -1,16 +1,22 @@
 @page
 @model FixtureManager.Pages.Bookings.IndexModel
 
-@{
-    ViewData["Title"] = "Index";
-}
+@{ ViewData["Title"] = "Index"; }
 
 <h1>Bookings</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <div class="row">
+        <div class="col-md-auto">
+            <a asp-page="Create">Create New</a>
+        </div>
+        <div class="col-md-auto">
+            <label class="form-check-label" for="show-past">Show Past</label>
+            <input id="show-past" type="checkbox">
+        </div>
+    </div>
 </p>
-<table class="table">
+<table class="table table-condensed">
     <thead>
         <tr>
             <th>
@@ -32,29 +38,44 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Booking) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Start)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.End)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pitch.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsRecurring)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Booking)
+        {
+<tr class="@(@item.IsPast ? "past" : "current")">
+    <td>
+        @Html.DisplayFor(modelItem => item.Title)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Start)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.End)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Pitch.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.IsRecurring)
+    </td>
+    <td>
+        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+        <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+    </td>
+</tr>}
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#show-past").click(function () {
+                if (this.checked) {
+                    $('.past').show();
+                } else {
+                    $('.past').hide();
+                }
+            })
+            
+        });
+    </script>
+}

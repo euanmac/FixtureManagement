@@ -13,6 +13,13 @@ namespace FixtureManager.Models
         public Guid PitchId { get; set; }
         [Display(Name = "Recurring")]
         public bool IsRecurring { get; set; }
+        public bool IsPast
+        {
+            get
+            {
+                return End < DateTime.Now.Date;
+            }
+        }
 
         //Navigation
         public Pitch Pitch { get; set; }
