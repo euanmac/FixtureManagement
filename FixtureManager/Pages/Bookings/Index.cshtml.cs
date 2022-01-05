@@ -25,6 +25,7 @@ namespace FixtureManager.Pages.Bookings
         {
             Booking = await _context.Booking
                 .Include(b => b.Pitch)
+                .OrderBy(b => b.Start)
                 .ToListAsync();
         }
     }
