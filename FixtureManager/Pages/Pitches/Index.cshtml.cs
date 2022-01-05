@@ -33,7 +33,7 @@ namespace FixtureManager.Pages.Pitches
         public async Task OnGetAsync(Guid? pitchId, DateTime? date)
         {
             Pitch = await _context.Pitch
-                .Where(p => p.DisplayOrder > 0)
+                .Where(p => p.DisplayOrder >= 0)
                 .OrderBy(p => p.DisplayOrder)
                 .ToListAsync();
 
