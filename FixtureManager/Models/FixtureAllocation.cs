@@ -30,7 +30,7 @@ namespace FixtureManager.Models
         {
             get
             {
-                return (RefereeId != null && PitchId != null && Duration != null);
+                return (RefereeId != null && PitchId != null && Duration != TimeSpan.Zero);
             }
         }
 

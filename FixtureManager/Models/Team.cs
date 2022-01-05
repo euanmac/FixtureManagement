@@ -108,8 +108,10 @@ namespace FixtureManager.Models
                     League.SouthBucksMini => "OrangeRed",
                     League.TVCWFL => "MediumSeaGreen",
                     League.WycAndSouthBucksMinor => "SteelBlue",
-                    League.JPL => "MidnightBlue"
-
+                    League.JPL => "MidnightBlue",
+                    League.UHL => "DimGray",
+                    League.ADL => "DimGray",
+                    _ => "SteelBlue"
                 };
             }
         }

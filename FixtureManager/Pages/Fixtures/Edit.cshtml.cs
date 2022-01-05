@@ -18,7 +18,6 @@ namespace FixtureManager.Pages.Fixtures
     {
 
         private readonly FixtureManager.Data.ApplicationDBContext _context;
-        private readonly Guid teamId;
         public EditModel(FixtureManager.Data.ApplicationDBContext context)
         {
             _context = context;

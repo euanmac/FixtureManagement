@@ -14,7 +14,6 @@ namespace FixtureManager.Pages.FixtureAllocations
     public class CreateModel : PageModel
     {
         private readonly FixtureManager.Data.ApplicationDBContext _context;
-        private readonly Guid _fixtureId;
 
         public CreateModel(FixtureManager.Data.ApplicationDBContext context)
         {
