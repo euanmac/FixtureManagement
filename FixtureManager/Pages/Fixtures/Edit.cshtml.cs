@@ -54,7 +54,31 @@ namespace FixtureManager.Pages.Fixtures
                 return Page();
             }
 
+            Fixture old = _context.Fixture
+                .Include(f => f.FixtureAllocation)
+                .Where(f => (f.Id == Fixture.Id))
+                .AsNoTracking()
+                .FirstOrDefault();
+
+            FixtureAllocation fa = _context.FixtureAlloctation
+                .Where(fa => fa.FixtureId == Fixture.Id).FirstOrDefault();
+
+            //Need to delete fixture allocation when cancelled or postponed
+            if (old.FixtureAllocation != null) {
+
+                //If fixture type changed to cancelled or postponed then delete the allocation
+                if (Fixture.FixtureType == FixtureType.Cancelled || Fixture.FixtureType == FixtureType.Postponed)
+                {
+                    if (Fixture.FixtureType != old.FixtureType)
+                    {
+                        _context.Remove(fa);
+                    }
+                }
+            }
+
             _context.Attach(Fixture).State = EntityState.Modified;
+
+
 
             try
             {

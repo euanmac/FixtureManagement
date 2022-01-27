@@ -69,7 +69,7 @@ namespace FixtureManager.Pages.Fixtures
                 .Where(f => (f.Date >= StartDateFilter && f.Date <= EndDateFilter))
                 .Where(f => f.IsHome == IncludeHomeFilter || f.IsHome != IncludeAwayFilter)
                     .ToQueryString();
-
+            
             //List
             //Fixture.OrderBy(f => f.Date)
             //    .ThenBy(f => f.Team.AgeGroup);

@@ -97,7 +97,7 @@
                 @Html.DisplayFor(modelItem => item.Opponent)
             </td>
             <td>
-                @(item.FixtureType.ToString().Substring(0,1) )
+                @(Models.Extensions.ShortFixtureName(item.FixtureType))
             </td>
             <td>
                 @if (item.FixtureAllocation != null)
@@ -120,11 +120,11 @@
                 <a asp-page="./Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
                 <a asp-page="./Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
                
-                @if (item.IsHome && item.FixtureAllocation == null)
+                @if (item.CanAllocate && item.FixtureAllocation == null)
                 {
                     <a asp-page="../FixtureAllocations/Create" asp-route-fixtureid="@item.Id"><i class="bi bi-clock"></i></a>
                 }
-                else if (item.IsHome && item.FixtureAllocation != null)
+                else if (item.CanAllocate && item.FixtureAllocation != null )
                 {
                      <a asp-page="../FixtureAllocations/Edit" asp-route-id="@item.FixtureAllocation.Id"><i class="bi bi-clock"></i></a>
                 }
