@@ -16,6 +16,15 @@ namespace FixtureManager.Models
         public string Opponent { get; set; }
         [Display(Name = "Type")]
         public FixtureType FixtureType { get; set; }
+
+        public bool CanAllocate
+        {
+            get
+            {
+                return IsHome && (FixtureType != FixtureType.Postponed && FixtureType != FixtureType.Cancelled);
+            }
+        }
+         
        
         //Navigation properties
         [Ignore]
@@ -23,7 +32,7 @@ namespace FixtureManager.Models
         [Ignore]
         public FixtureAllocation FixtureAllocation { get; set; }
 
-   
+
 
     }
 
@@ -52,4 +61,22 @@ namespace FixtureManager.Models
         Other
     }
 
+    // Define an extension method in a non-nested static class.
+    public static class Extensions
+    {
+        public static string ShortFixtureName(this FixtureType fixtureType)
+        {
+            return fixtureType switch
+            {
+                FixtureType.Friendly => "F",
+                FixtureType.League => "L",
+                FixtureType.Cup => "C",
+                FixtureType.Postponed => "P",
+                FixtureType.Cancelled => "X",
+                _ => "O"
+            };
+        }
+    }
 }
+
+
