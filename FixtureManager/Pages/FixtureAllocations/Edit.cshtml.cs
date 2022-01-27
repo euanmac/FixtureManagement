@@ -132,6 +132,37 @@ namespace FixtureManager.Pages.FixtureAllocations
             return RedirectToPage("../Fixtures/Index");
         }
 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://aka.ms/RazorPagesCRUD.
+        public async Task<IActionResult> OnPostDeleteAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+
+            _context.Remove(FixtureAllocation);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!FixtureAllocationExists(FixtureAllocation.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToPage("../Fixtures/Index");
+        }
+
         private bool FixtureAllocationExists(Guid id)
         {
             return _context.FixtureAlloctation.Any(e => e.Id == id);
