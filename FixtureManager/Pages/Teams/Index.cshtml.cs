@@ -28,7 +28,8 @@ namespace FixtureManager.Pages.Teams
                 .Include(t => t.Contacts)
                     .ThenInclude(c => c.Person)
                 .OrderBy(t => t.AgeGroup)
-                    .ThenBy(t => t.Name)
+                    .ThenBy(t => t.Gender)
+                    .ThenBy(t => t.Division)
                 .AsNoTracking()
                 .ToListAsync();
                             

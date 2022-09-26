@@ -1,0 +1,23 @@
+﻿@page
+@model AdminModel
+@{
+    ViewData["Title"] = "Admin page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Admin22</h1>
+</div>
+<a asp-page-handler="Roll">Roll Junior Groups</a>
+
+<form method="get" asp-page-handler="DeleteFixtures">
+    <div class="form-group form-group-sm">
+        <div class="row">
+            <div class="col-md-auto">
+                <label>Delete fixtures before</label>
+                x<input type="hidden" name="handler" value="DeleteFixtures" />
+                <input asp-for="DeleteBefore" class="form-control-sm" />
+                <input type="submit" value="Filter" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>

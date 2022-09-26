@@ -36,20 +36,6 @@ namespace FixtureManager.Models
 
     }
 
-    public class DownloadFixture
-    {
- 
-        public int Id { get; set; }
-        [DataType(DataType.Date)]
-        public DateTime Date { get; set; }
-        [Display(Name = "Home")]
-        public bool IsHome { get; set; }
-        public string Opponent { get; set; }
-        [Display(Name = "Type")]
-        public FixtureType FixtureType { get; set; }
-        public bool Add { get; set; }
-
-    }
 
     public enum FixtureType
     {
@@ -77,6 +63,9 @@ namespace FixtureManager.Models
             };
         }
     }
+
+
+
 }
 
 

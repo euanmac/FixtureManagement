@@ -33,32 +33,39 @@
         <dd class="col-sm-10">
             @if (Model.Team.FixtureURL.Length > 0)
             {
-                 <a href="@Model.Team.FixtureURL"> @Html.DisplayFor(model => model.Team.League) - @Html.DisplayFor(model => model.Team.Division) </a> }
+                <a href="@Model.Team.FixtureURL"> @Html.DisplayFor(model => model.Team.League) - @Html.DisplayFor(model => model.Team.Division) </a> }
             else
             {
                 <div>@Html.DisplayFor(model => model.Team.League) - @Html.DisplayFor(model => model.Team.Division)</div>
             }
         </dd>
-    @foreach (var item in Model.Team.Contacts)
-    {
-        <dt class="col-sm-2">
-            @item.ContactType
-        </dt>
-        @if (User.Identity.IsAuthenticated)
+        @foreach (var item in Model.Team.Contacts)
         {
-            <dd class="col-sm-10">
-                @item.Person.FullName
-                (<a href="mailto:@item.Person.Email">@item.Person.Email</a>)
-            </dd>
-        } 
-        else
-        {
-            <dd class="col-sm-10">
-                @item.Person.FullName
-            </dd>
+            <dt class="col-sm-2">
+                @item.ContactType
+            </dt>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <dd class="col-sm-10">
+                    @item.Person.FullName
+                    (<a href="mailto:@item.Person.Email">@item.Person.Email</a>)
+                </dd>
+            }
+            else
+            {
+                <dd class="col-sm-10">
+                    @item.Person.FullName
+                </dd>
             }
         }
-
+        <dt class="col-sm-2">
+            Summary
+        </dt>
+        <dd class="col-sm-10">
+            Total: @Html.DisplayFor(model => model.Total)
+            Home: @Html.DisplayFor(model => model.Home)
+            Away: @Html.DisplayFor(model => model.Away)
+        </dd>
 
     </dl>
    
@@ -141,6 +148,7 @@
     <a asp-page="./Edit" asp-route-id="@Model.Team.Id">Edit</a> |
     <a asp-page="../Fixtures/Create" asp-route-teamId="@Model.Team.Id">Create Fixture</a> |
     <a asp-page="../Fixtures/Download" asp-route-id="@Model.Team.Id">Download Fixtures</a> |
+    <a asp-page="../Fixtures/DeleteDixtures" asp-route-id="@Model.Team.Id">Delete All Fixtures</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
 }

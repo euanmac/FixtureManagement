@@ -1,9 +1,9 @@
 @page
-@model FixtureManager.Pages.Fixtures.IndexModel
+@model FixtureManager.Pages.Fixtures.WeekendModel
 
-@{ ViewData["Title"] = "Fixtures"; }
+@{ ViewData["Title"] = "Weekend"; }
 
-<h2>Fixtures</h2>
+<h2>Weekend</h2>
 
 <p>
     @if (User.Identity.IsAuthenticated)
@@ -15,12 +15,14 @@
 <form asp-page="./Index" method="get">
     <div class="form-group form-group-sm">
         <div class="row">
-            <button class="fc-prevSat-button fc-button fc-button-primary" type="button" aria-label="prevSat"><span class="fc-icon fc-icon-chevrons-left"></span></button>
             <div class="col-md-auto">
                 <label>Start</label>
                 <input asp-for="StartDateFilter" class="form-control-sm" />
             </div>
-
+            <div class="col-md-auto">
+                <label>End</label>
+                <input asp-for="EndDateFilter" class="form-control-sm" />
+            </div>
             <div class="col-md-auto">
                 <div class="form-group form-check-inline">
                     <label class="form-check-label">
@@ -45,11 +47,9 @@
 <table class="table table-condensed">
     <thead>
         <tr>
+
             <th>
-                @Html.DisplayNameFor(model => model.Fixture[0].Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fixture[0].Team)
+                @Html.DisplayNameFor(model => model.Team)
             </th>
             <th>
                 @*@Html.DisplayNameFor(model => model.Fixture[0].IsHome)*@

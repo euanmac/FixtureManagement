@@ -24,6 +24,10 @@ namespace FixtureManager.Models
         [Display(Name = "Club Ref Required")]
         public bool RefRequired { get; set; }
 
+        public void RollAgeGroup()
+        {
+                AgeGroup++;
+        }
 
         [Display(Name = "Age Group")]
         public string GroupDescription
@@ -116,6 +120,29 @@ namespace FixtureManager.Models
             }
         }
 
+
+        public DayOfWeek MatchDay
+        {
+            get
+            {
+                return League switch
+                {
+                    League.BucksGirls => DayOfWeek.Saturday,
+                    League.HighWycSunComb => DayOfWeek.Sunday,
+                    League.OxGirls => DayOfWeek.Saturday,
+                    League.OxMailYouth => DayOfWeek.Sunday,
+                    League.OxOver50 => DayOfWeek.Sunday,
+                    League.SouthBucksMini => DayOfWeek.Sunday,
+                    League.TVCWFL => DayOfWeek.Sunday,
+                    League.WycAndSouthBucksMinor => DayOfWeek.Sunday,
+                    League.JPL => DayOfWeek.Saturday,
+                    League.UHL => DayOfWeek.Saturday,
+                    League.ADL => DayOfWeek.Saturday,
+                    _ => DayOfWeek.Sunday
+                };
+            }
+        }
+
         public string FixtureURL
         {
             get
@@ -134,75 +161,8 @@ namespace FixtureManager.Models
 
         //Navigation
         public List<Fixture> Fixtures { get; set; }
-        public List<TeamContact> Contacts { get; set; }
-
-
-
-        private IList<DownloadFixture> GetFixturesFromFullTime()
-
-        {
-
-            List<(Fixture, bool)> fixtureList = new List<(Fixture, bool)>();
-            List<DownloadFixture> dFixtures = new List<DownloadFixture>();
-
-            //Get fixtures from FulLTime
-            if (FullTimeTeamId == null || FullTimeLeagueId == null)
-            {
-                return dFixtures;
-            }
-
-            var url = $"https://fulltime.thefa.com/displayTeam.html?divisionseason={FullTimeLeagueId}&teamID={FullTimeTeamId}";
-            HtmlWeb web = new HtmlWeb();
-            var htmlDoc = web.Load(url);
-
-            var rows = htmlDoc.DocumentNode.SelectNodes("//table/tbody/tr");
-            int id = 0;
-
-            try
-            {
-                foreach (var row in rows)
-                {
-                    string type = row.SelectSingleNode("./td[1]").InnerText.Trim();
-                    string date = row.SelectSingleNode("./td[2]").InnerText.Trim().Substring(0, 8);
-                    string home = HtmlEntity.DeEntitize(row.SelectSingleNode("./td[3]").InnerText.Trim());
-                    string away = HtmlEntity.DeEntitize(row.SelectSingleNode("./td[7]").InnerText.Trim());
-                    string link = row.SelectSingleNode("./td[3]/a").Attributes[0].Value;
-                    int index = link.IndexOf("=") + 1;
-                    string fixtureId = link.Substring(index, link.Length - index);
-
-
-                    DateTime fdate = DateTime.Parse(date, new CultureInfo("en-GB"));
-                    bool isHome = home.ToLower().IndexOf("thame ") >= 0;
-                    string opponent = isHome ? away : home;
-
-                    FixtureType ftype = type switch
-                    {
-                        "L" => FixtureType.League,
-                        "Cup" => FixtureType.Cup,
-                        "F" => FixtureType.Friendly,
-                        _ => FixtureType.Other
-                    };
-
-                    var fixture = new Fixture { Date = fdate, IsHome = isHome, Opponent = opponent, TeamId = Id, Team = this, FixtureType = ftype, Id = Guid.NewGuid() };
-                    var downloadFixture = new DownloadFixture { Id = id, Date = fdate, IsHome = isHome, Opponent = opponent, FixtureType = ftype, Add = true };
-                    id++;
-
-                    fixtureList.Add((fixture, true));
-                    dFixtures.Add(downloadFixture);
-                }
-
-            }
-
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error getting fixtures for team {Id}");
-            }
-
-            return dFixtures;
-
-        }
-
-    }
+        public List<TeamContact> Contacts { get; set; } 
+     }
 
 
     public enum AgeGroup
@@ -255,7 +215,7 @@ namespace FixtureManager.Models
     }
     public enum Division
     {
-        One=1, Two=2, Three=3, Four=4, Five=5, Six=6,  Red=20, White=21, Blue=22, Black=23, Green=24, Yellow=25, West = 70, South = 71, North = 72, East = 73, Championship = 80, Premier = 81, Other =100
+        One=1, Two=2, Three=3, Four=4, Five=5, Six=6, Seven=7, Eight =8, Nine=9, Ten=10, Red=20, White=21, Blue=22, Black=23, Green=24, Yellow=25, West = 70, South = 71, North = 72, East = 73, Championship = 80, Premier = 81, Other =100
     }
 
     

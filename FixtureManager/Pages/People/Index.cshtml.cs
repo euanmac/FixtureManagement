@@ -25,11 +25,12 @@ namespace FixtureManager.Pages.People
         public async Task OnGetAsync()
         {
             Person = await _context.Person
+                .Include(p => p.ContactFor)
                 .OrderBy(p => p.LastName)
                 .ToListAsync();
 
             EmailAll = Person
-                .Where(p => p.Email != null && p.Email.Length > 0 )
+                .Where(p => ((p.Email != null && p.Email.Length > 0) && (p.ContactFor.Count > 0 || p.IsRef))) 
                 .Select(p => p.Email)                
                 .Aggregate("", (all, next) => all + "," + next);
 

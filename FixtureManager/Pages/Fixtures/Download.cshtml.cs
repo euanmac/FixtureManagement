@@ -43,7 +43,7 @@ namespace FixtureManager.Pages.Fixtures
                 return NotFound();
             }
 
-            DownloadFixtures = GetFixturesFromFullTime(Team);
+            DownloadFixtures = FixtureDownloader.FromFullTime(Team);
             return Page();
         }
 
@@ -79,71 +79,6 @@ namespace FixtureManager.Pages.Fixtures
             _context.SaveChanges();
 
             return RedirectToPage("/Teams/Details", new { id = teamId });
-        }
-
-        private IList<DownloadFixture> GetFixturesFromFullTime(Team team)
-
-        {
-
-            List<(Fixture, bool)> fixtureList = new List<(Fixture,bool)>();
-            List<DownloadFixture> dFixtures = new List<DownloadFixture>();
-
-            //Get fixtures from FulLTime
-            if (Team.FullTimeTeamId == null || Team.FullTimeLeagueId == null)
-            {
-                return dFixtures;
-            }
-
-            //var url = $"https://fulltime.thefa.com/fixtures.html?selectedSeason={Team.FullTimeLeagueId}&selectedFixtureGroupKey=&selectedDateCode=all&selectedClub=&selectedTeam={Team.FullTimeTeamId}&selectedRelatedFixtureOption=2&selectedFixtureDateStatus=&selectedFixtureStatus=&previousSelectedFixtureGroupAgeGroup=&previousSelectedFixtureGroupKey=&previousSelectedClub=&itemsPerPage=100";
-            var url = $"https://fulltime.thefa.com/displayTeam.html?divisionseason={Team.FullTimeLeagueId}&teamID={Team.FullTimeTeamId}";
-            HtmlWeb web = new HtmlWeb();
-            var htmlDoc = web.Load(url);
-
-            var rows = htmlDoc.DocumentNode.SelectNodes("//table/tbody/tr");
-            int id = 0;
-
-            try
-            {
-                foreach (var row in rows)
-                {
-                    string type = row.SelectSingleNode("./td[1]").InnerText.Trim();
-                    string date = row.SelectSingleNode("./td[2]").InnerText.Trim().Substring(0, 8);
-                    string home = HtmlEntity.DeEntitize(row.SelectSingleNode("./td[3]").InnerText.Trim());
-                    string away = HtmlEntity.DeEntitize(row.SelectSingleNode("./td[7]").InnerText.Trim());
-                    string link = row.SelectSingleNode("./td[3]/a").Attributes[0].Value;
-                    int index = link.IndexOf("=") + 1;
-                    string fixtureId = link.Substring(index, link.Length - index);
-
-                    
-                    DateTime fdate = DateTime.Parse(date, new CultureInfo("en-GB"));
-                    bool isHome = home.ToLower().IndexOf("thame ") >= 0;
-                    string opponent = isHome ? away : home;
-
-                    FixtureType ftype = type switch
-                    {
-                        "L" => FixtureType.League,
-                        "Cup" => FixtureType.Cup,
-                        "F" => FixtureType.Friendly,
-                        _ => FixtureType.Other
-                    };
-
-                    var fixture = new Fixture { Date = fdate, IsHome = isHome, Opponent = opponent, TeamId = team.Id, Team = team, FixtureType = ftype, Id = Guid.NewGuid()};
-                    var downloadFixture = new DownloadFixture { Id= id, Date = fdate, IsHome = isHome, Opponent = opponent, FixtureType = ftype, Add = true };
-                    id++;
-
-                    fixtureList.Add((fixture, true));
-                    dFixtures.Add(downloadFixture);
-                }
-
-            }
-
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error getting fixtures for team {team.Id}");
-            }
-
-            return dFixtures;
-
         }
 
     }

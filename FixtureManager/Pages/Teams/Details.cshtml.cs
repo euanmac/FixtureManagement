@@ -23,6 +23,23 @@ namespace FixtureManager.Pages.Teams
         public Team Team { get; set; }
         public IList<Fixture> Fixtures { get; set; }
 
+        public int Total
+        {
+            get
+            {
+                return Fixtures.Count;
+
+            }
+        }
+
+        public int Home = 0;
+
+        public int Away { get
+            {
+                return Total - Home;
+            }
+        }
+
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
@@ -46,6 +63,7 @@ namespace FixtureManager.Pages.Teams
                 .AsNoTracking()
                 .ToListAsync();
 
+            Home =  Fixtures.Where(f => f.IsHome).ToList().Count;
             if (Team != null)
             {
                 return Page();

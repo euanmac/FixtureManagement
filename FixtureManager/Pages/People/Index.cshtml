@@ -32,7 +32,7 @@
                 @Html.DisplayNameFor(model => model.Person[0].Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Person[0].IsRef)
+                Teams
             </th>
             <th></th>
         }
@@ -57,7 +57,7 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsRef)
+                @Html.DisplayFor(modelItem => item.ContactFor.Count)
             </td>
 
         <td>

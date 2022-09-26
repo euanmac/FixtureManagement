@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace FixtureManager.Models
 {
@@ -27,6 +28,7 @@ namespace FixtureManager.Models
         //Navigation
         //No link to teams at the moment
         //No link to fixtures either
+        public List<TeamContact> ContactFor { get; set; }
     }
     
 }
