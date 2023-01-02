@@ -24,7 +24,7 @@ namespace FixtureManager.Pages.Fixtures
         [BindProperty]
         public Fixture Fixture { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(Guid? id)
+        public async Task<IActionResult> OnGetAsync(Guid? id, Guid? teamId)
         {
             if (id == null)
             {
@@ -41,7 +41,7 @@ namespace FixtureManager.Pages.Fixtures
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(Guid? id)
+        public async Task<IActionResult> OnPostAsync(Guid? id, Guid? teamId)
         {
             if (id == null)
             {
@@ -56,7 +56,15 @@ namespace FixtureManager.Pages.Fixtures
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            if (teamId == null)
+            {
+                return RedirectToPage("./Index");
+            }
+            else
+            {
+                return RedirectToPage("/Teams/Details", new { id = teamId });
+            }
+
         }
     }
 }

@@ -32,6 +32,7 @@ namespace FixtureManager.Pages.Teams
                     .ThenBy(t => t.Division)
                 .AsNoTracking()
                 .ToListAsync();
+
                             
         }
     }

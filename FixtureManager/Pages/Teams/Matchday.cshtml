@@ -1,0 +1,140 @@
+@page
+@model FixtureManager.Pages.Teams.MatchdayModel
+
+@{
+    ViewData["Title"] = "Teams";
+}
+<h2>Gameweek @(Model.GameWeekStart.ToString("dd-MMM-yy")) to @(Model.GameWeekEnd.ToString("dd-MMM-yy"))</h2>
+<h2 class="panel-title">
+    Matchday Summary
+    @*<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#demo" aria-expanded="false" aria-controls="demo">
+    </button>*@
+</h2>
+
+<form method="post">
+    <div id="demo" class="uncollapse">
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>
+                        Team
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Venue
+                    </th>
+                    <th>
+                        Opponent
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Pitch
+                    </th>
+                    <th>
+                        Start
+                    </th>
+                    @*<th>
+                            Contacts
+                        </th>*@
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <th></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var team in Model.FixtureRecResults.Keys)
+                {
+                    var newRow = true;
+                    @foreach (var item in Model.FixtureRecResults[team])
+                    {
+                        <tr>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.GroupDescription)*@
+                                @if (newRow)
+                                {
+                                    <a asp-page="./Details" asp-route-id="@item.Team.Id">@item.Team.DisplayName</a>
+                                }
+                            </td>
+                            <td>
+                                @item.MatchDate.ToShortDateString()
+                            </td>
+                            <td>
+                                <i class="@Model.GetRecIcon(item.RecStatus) h6"></i>
+                            </td>
+                            @if (item.RecStatus != Models.FixtureRecMatchType.noFixture)
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Venue)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Opponent)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FixtureType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Pitch)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Start)
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                            }
+                            @*<td>
+                                        @{ foreach (var contact in item.Team.Contacts.OrderBy(c => c.ContactType))
+                                            {
+                                                @contact.Person.FirstName @:  @contact.Person.LastName <br />
+                                            }
+                                        }
+                                </td>*@
+                            @if (User.Identity.IsAuthenticated)
+                                {
+                                <td>
+                                        @*<button type="submit" class="btn btn-link btn-sm p-0">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>*@
+                                    @if (item.RecStatus == Models.FixtureRecMatchType.fullTimeUnmatched) { 
+                                        <button type="submit" name="D" value="C" class="btn btn-link btn-sm p-0" asp-route-teamId="@item.Team.Id" asp-route-opponent="@item.Opponent"
+                                                asp-route-matchDate="@(item.MatchDate.ToString("dd-MMM-yyyy"))" asp-route-venue="@item.Venue"
+                                                asp-route-fixturetype="@( (int) item.FixtureType)" asp-route-gameweekStart="@(Model.GameWeekStart.ToString("dd-MMM-yyyy"))">
+                                            <i class="bi bi-cloud-arrow-down h6"></i>
+                                        </button>
+                                    }
+                                     @*|*@
+                                    @*<a asp-page="./Delete" asp-route-id="@item.Team.Id"><i class="bi bi-trash"></i></a>*@
+                                </td>
+                            }
+                            @{newRow = false;}
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
+<script>
+    function linkSubmit() {
+        document.getElementById("main").submit();
+    }
+</script>

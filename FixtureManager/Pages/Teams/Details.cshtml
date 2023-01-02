@@ -94,11 +94,10 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Team.Fixtures[0].FixtureAllocation.Pitch)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Team.Fixtures[0].FixtureAllocation.Referee)
-                </th>
-                <th>
-                </th>
+                @if (User.Identity.IsAuthenticated)
+                {
+                <th></th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -127,16 +126,24 @@
                 <td>
                     @Html.DisplayFor(model => item.FixtureAllocation.Pitch.Name)
                 </td>
-                <td>
-                    @Html.DisplayFor(model => item.FixtureAllocation.Referee.FullName)
-                </td>
-
-                <td>
-                    @*<a asp-page="./TeamContacts/Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-page="./TeamContacts/Delete" asp-route-id="@item.Id">Remove</a> |
-            <a asp-page="./TeamContacts/Create" asp-route-teamId="@item.TeamId">Add</a>*@
-                </td>
-            </tr>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <td>
+                        @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>*@
+                        <a asp-page="../Fixtures/Edit" asp-route-id="@item.Id"  asp-route-teamId="@item.TeamId"><i class="bi bi-pencil-square"></i></a>
+                        <a asp-page="../Fixtures/Delete" asp-route-id="@item.Id" asp-route-teamId="@item.TeamId"><i class="bi bi-trash"></i></a>
+               
+                        @if (item.CanAllocate && item.FixtureAllocation == null)
+                        {
+                            <a asp-page="../FixtureAllocations/Create" asp-route-fixtureid="@item.Id"><i class="bi bi-clock"></i></a>
+                        }
+                        else if (item.CanAllocate && item.FixtureAllocation != null)
+                        {
+                             <a asp-page="../FixtureAllocations/Edit" asp-route-id="@item.FixtureAllocation.Id"><i class="bi bi-clock"></i></a>
+                        }
+                    </td>
+                }
+                </tr>
             }
         </tbody>
     </table>

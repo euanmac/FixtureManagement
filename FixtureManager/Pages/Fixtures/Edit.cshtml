@@ -50,7 +50,7 @@
 <div>
     @{
         var team = Request.Query["teamId"].FirstOrDefault();
-        var backUrl = (team == null) ? "./Index" : $"/Teams/Details?teamId={team}";
+        //var backUrl = (team == null) ? "./Index" : $"/Teams/Details?teamId={team}";
      }
     @if (team != null)
     {

@@ -8,6 +8,7 @@ namespace FixtureManager.Models
 {
     public class FixtureDownloader
     {
+        public static string FullTimeURL = "https://fulltime.thefa.com/displayTeam.html?divisionseason={0}&teamID={1}";
         public static IList<DownloadFixture> FromFullTime(Team team)
         {
             List<(Fixture, bool)> fixtureList = new List<(Fixture, bool)>();
@@ -20,7 +21,8 @@ namespace FixtureManager.Models
             }
 
             //var url = $"https://fulltime.thefa.com/fixtures.html?selectedSeason={team.FullTimeLeagueId}&selectedFixtureGroupKey=&selectedDateCode=all&selectedClub=&selectedTeam={Team.FullTimeTeamId}&selectedRelatedFixtureOption=2&selectedFixtureDateStatus=&selectedFixtureStatus=&previousSelectedFixtureGroupAgeGroup=&previousSelectedFixtureGroupKey=&previousSelectedClub=&itemsPerPage=100";
-            var url = $"https://fulltime.thefa.com/displayTeam.html?divisionseason={team.FullTimeLeagueId}&teamID={team.FullTimeTeamId}";
+            //var url = $"https://fulltime.thefa.com/displayTeam.html?divisionseason={team.FullTimeLeagueId}&teamID={team.FullTimeTeamId}";
+            var url = String.Format(FullTimeURL, team.FullTimeLeagueId, team.FullTimeTeamId);
             HtmlWeb web = new HtmlWeb();
             var htmlDoc = web.Load(url);
 
