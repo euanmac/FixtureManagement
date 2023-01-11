@@ -46,7 +46,18 @@
     
     <form method="post">
         <input type="hidden" asp-for="Fixture.Id" />
+        <input type="hidden" asp-for="@Model.RefererURL" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
+        @{
+            var referrer = Request.Headers.Referer.ToString();
+        }
+        @if (referrer != null)
+        {
+            <a href="@referrer">Back to Summary</a>
+        }
+        else
+        {
+            <a asp-page=./Index>Back to List</a>
+        }
     </form>
 </div>

@@ -24,8 +24,18 @@ namespace FixtureManager.Models
                 return IsHome && (FixtureType != FixtureType.Postponed && FixtureType != FixtureType.Cancelled);
             }
         }
-         
-       
+
+        public bool IsAllocated
+        {
+            get
+            {
+                return (FixtureAllocation != null && FixtureAllocation.Pitch != null
+                    && FixtureAllocation.Pitch.Name != null
+                    && (FixtureAllocation.Start.Minute != 0
+                    || FixtureAllocation.Start.Hour != 0));
+            }
+        }
+
         //Navigation properties
         [Ignore]
         public Team Team { get; set; }

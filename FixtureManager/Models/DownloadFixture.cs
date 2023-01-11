@@ -55,7 +55,7 @@ namespace FixtureManager.Models
                     };
 
                     var fixture = new Fixture { Date = fdate, IsHome = isHome, Opponent = opponent, TeamId = team.Id, Team = team, FixtureType = ftype, Id = Guid.NewGuid() };
-                    var downloadFixture = new DownloadFixture { Id = id, Date = fdate, IsHome = isHome, Opponent = opponent, FixtureType = ftype, Add = true };
+                    var downloadFixture = new DownloadFixture { Id = Guid.NewGuid(), Date = fdate, IsHome = isHome, Opponent = opponent, FixtureType = ftype, Add = true };
                     id++;
 
                     fixtureList.Add((fixture, true));
@@ -76,7 +76,7 @@ namespace FixtureManager.Models
 
     public class DownloadFixture
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
         [Display(Name = "Home")]

@@ -24,7 +24,10 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Fixtures/Index">Fixture List</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Teams/Matchday">Gameweek Summary</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Fixtures/Index">All Fixtures</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Pitches/Index">Fixture Grid</a>
@@ -32,12 +35,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Teams/Index">Teams</a>
                         </li>
-                    @if (User.Identity.IsAuthenticated)
-                    { 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Bookings/Index">Bookings</a>
-                        </li>
-                    }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Bookings/Index">Bookings</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/People/Index">Contacts</a>
                         </li>
@@ -45,8 +48,8 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/TeamContacts/Index">Team Contacts</a>
                         </li>
                         @*<li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/FixtureAllocations/Index">Fixture Allocations</a>
-        </li>*@
+                                <a class="nav-link text-dark" asp-area="" asp-page="/FixtureAllocations/Index">Fixture Allocations</a>
+                            </li>*@
 
                     </ul>
                 </div>
@@ -69,7 +72,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src='~/lib/fullcalendar-scheduler/main.js'></script>
-
+    <script src="~/js/tablesort.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

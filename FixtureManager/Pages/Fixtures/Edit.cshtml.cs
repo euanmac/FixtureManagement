@@ -26,6 +26,9 @@ namespace FixtureManager.Pages.Fixtures
         [BindProperty]
         public Fixture Fixture { get; set; }
 
+        [BindProperty]
+        public string RefererURL { get; set; }
+
         public async Task<IActionResult> OnGetAsync(Guid? id, Guid? teamId)
         {
             if (id == null)
@@ -41,7 +44,7 @@ namespace FixtureManager.Pages.Fixtures
                 return NotFound();
             }
            ViewData["TeamId"] = new SelectList(_context.Team, "Id", "DisplayName");
-
+           RefererURL = Request.Headers.Referer;
            return Page();
         }
 
@@ -77,9 +80,6 @@ namespace FixtureManager.Pages.Fixtures
             }
 
             _context.Attach(Fixture).State = EntityState.Modified;
-
-
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -96,12 +96,13 @@ namespace FixtureManager.Pages.Fixtures
                 }
             }
 
-            if (teamId == null)
+            if (RefererURL == null)
             {
                 return RedirectToPage("./Index");
             } else
             {
-                return RedirectToPage("/Teams/Details", new { id = teamId });
+                //return RedirectToPage("/Teams/Details", new { id = teamId });
+                return Redirect(RefererURL);    
             }
 
         }

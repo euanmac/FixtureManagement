@@ -29,20 +29,6 @@ namespace FixtureManager.Pages.FixtureAllocations
         [BindProperty]
         public int DurationMins { get; set; }
 
-        //public IEnumerable<SelectListItem> DurationList
-        //{
-        //    get
-        //    {
-        //        return new SelectListItem[] {
-        //            new SelectListItem("60", "60"),
-        //            new SelectListItem("75", "75"),
-        //            new SelectListItem("90", "90"),
-        //            new SelectListItem("105", "105"),
-        //            new SelectListItem("120", "120")
-        //        }.ToList();
-        //    }
-        //}
-
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)

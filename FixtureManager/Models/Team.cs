@@ -107,10 +107,16 @@ namespace FixtureManager.Models
                     //Default row for local fixture
                     TeamReconiliationRow recRow = new TeamReconiliationRow {
                         Team = this,
+                        Id = f.Id,
                         MatchDate = DateOnly.FromDateTime(f.Date),
                         Opponent = f.Opponent,
                         Venue = (f.IsHome ? "H" : "A"),
-                        FixtureType = f.FixtureType
+                        FixtureType = f.FixtureType,
+                        CanAllocate = f.CanAllocate,
+                        IsAllocated = f.IsAllocated,
+                        AllocationId = f.IsAllocated ? f.FixtureAllocation.Id : Guid.Empty,
+                        Pitch = f.IsAllocated ? f.FixtureAllocation.Pitch.Name : "",
+                        Start = f.IsAllocated ? TimeOnly.FromDateTime(f.FixtureAllocation.Start) : TimeOnly.MinValue
  
                     };
 
@@ -143,6 +149,7 @@ namespace FixtureManager.Models
                 {
                     return new TeamReconiliationRow
                     {
+                        Id = df.Id,
                         Team = this,
                         MatchDate = DateOnly.FromDateTime(df.Date),
                         Opponent = df.Opponent,

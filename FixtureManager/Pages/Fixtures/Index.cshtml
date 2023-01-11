@@ -19,7 +19,10 @@
                 <label>Start</label>
                 <input asp-for="StartDateFilter" class="form-control-sm" />
             </div>
-
+            <div class="col-md-auto">
+                <label>End</label>
+                <input asp-for="EndDateFilter" class="form-control-sm" />
+            </div>
             <div class="col-md-auto">
                 <div class="form-group form-check-inline">
                     <label class="form-check-label">
@@ -32,16 +35,16 @@
                     </label>
                 </div>
             </div>
-                <div class="col-md-auto">
-                    <input type="submit" value="Filter" class="btn btn-primary" /> |
-                    <a asp-page="./Index">Reset</a>
-                </div>
+            <div class="col-md-auto">
+                <input type="submit" value="Filter" class="btn btn-primary" /> |
+                <a asp-page="./Index">Reset</a>
             </div>
+        </div>
         </div>
 </form>
 
 
-<table class="table table-condensed">
+<table class="table table-condensed table-sort">
     <thead>
         <tr>
             <th>

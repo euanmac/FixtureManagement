@@ -23,9 +23,12 @@ namespace FixtureManager.Pages.Fixtures
 
         [BindProperty]
         public Fixture Fixture { get; set; }
+        [BindProperty]
+        public string RefererURL { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid? id, Guid? teamId)
         {
+            RefererURL = Request.Headers.Referer;
             if (id == null)
             {
                 return NotFound();
@@ -38,6 +41,7 @@ namespace FixtureManager.Pages.Fixtures
             {
                 return NotFound();
             }
+
             return Page();
         }
 
@@ -56,15 +60,15 @@ namespace FixtureManager.Pages.Fixtures
                 await _context.SaveChangesAsync();
             }
 
-            if (teamId == null)
+            if (RefererURL == null)
             {
                 return RedirectToPage("./Index");
             }
             else
             {
-                return RedirectToPage("/Teams/Details", new { id = teamId });
+                //return RedirectToPage("/Teams/Details", new { id = teamId });
+                return Redirect(RefererURL);
             }
-
         }
     }
 }
