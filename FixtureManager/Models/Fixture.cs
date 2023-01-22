@@ -41,20 +41,19 @@ namespace FixtureManager.Models
         public Team Team { get; set; }
         [Ignore]
         public FixtureAllocation FixtureAllocation { get; set; }
-
-
-
     }
 
 
     public enum FixtureType
     {
-        Friendly,
-        League,
-        Cup,
-        Cancelled,
-        Postponed,
-        Other
+        Friendly =0,
+        League =1,
+        Cup =2,
+        [Display(Name = "County Cup")]
+        CountyCup =6,
+        Cancelled =3,
+        Postponed =4,
+        Other =5
     }
 
     // Define an extension method in a non-nested static class.
@@ -69,8 +68,25 @@ namespace FixtureManager.Models
                 FixtureType.Cup => "C",
                 FixtureType.Postponed => "P",
                 FixtureType.Cancelled => "X",
+                FixtureType.CountyCup => "CC",
                 _ => "O"
             };
+        }
+
+        public static FixtureType FromFullTimeFixtureType(this League league, string FTType)
+        {
+            return FTType switch
+            {
+                "F" => FixtureType.Friendly,
+                "Cup" => FixtureType.Cup,
+                "C" => FixtureType.CountyCup,
+                "L" => FixtureType.League,
+                "ONE" => FixtureType.League,
+                "TWO" => FixtureType.League,
+                "HL2N" => FixtureType.League,
+                _ => FixtureType.Other
+            };
+
         }
     }
 

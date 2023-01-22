@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using HtmlAgilityPack;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace FixtureManager.Models
 {
     public class FixtureDownloader
     {
         public static string FullTimeURL = "https://fulltime.thefa.com/displayTeam.html?divisionseason={0}&teamID={1}";
+        public static string Table_Fixtures = "fixtures-table";
+        public static string Table_Results = "results-table";
+        public static string TR_CountyCupRow = "fa-county-cup-fixture-row";
+        public static string Class = "class";
+        public static string HomeTeam = "home-team";
+        public static string AwayTeam = "road-team";
+        public static string Score = "score";
+
         public static IList<DownloadFixture> FromFullTime(Team team)
         {
             List<(Fixture, bool)> fixtureList = new List<(Fixture, bool)>();
@@ -26,43 +35,92 @@ namespace FixtureManager.Models
             HtmlWeb web = new HtmlWeb();
             var htmlDoc = web.Load(url);
 
-            var rows = htmlDoc.DocumentNode.SelectNodes("//table/tbody/tr");
-            int id = 0;
+
+            //Get fixture rows
+            var rows = htmlDoc.DocumentNode.SelectNodes($"//div[contains(@class,'{Table_Fixtures}')]/table/tbody/tr");
 
             try
             {
-                foreach (var row in rows)
+                if (rows != null)
                 {
-                    string type = row.SelectSingleNode("./td[1]").InnerText.Trim();
-                    string date = row.SelectSingleNode("./td[2]").InnerText.Trim().Substring(0, 8);
-                    string home = HtmlEntity.DeEntitize(row.SelectSingleNode("./td[3]").InnerText.Trim());
-                    string away = HtmlEntity.DeEntitize(row.SelectSingleNode("./td[7]").InnerText.Trim());
-                    string link = row.SelectSingleNode("./td[3]/a").Attributes[0].Value;
-                    int index = link.IndexOf("=") + 1;
-                    string fixtureId = link.Substring(index, link.Length - index);
-
-
-                    DateTime fdate = DateTime.Parse(date, new CultureInfo("en-GB"));
-                    bool isHome = home.ToLower().IndexOf("thame ") >= 0;
-                    string opponent = isHome ? away : home;
-
-                    FixtureType ftype = type switch
+                    //Get fixtures from fixtures table
+                    foreach (var row in rows)
                     {
-                        "L" => FixtureType.League,
-                        "Cup" => FixtureType.Cup,
-                        "F" => FixtureType.Friendly,
-                        _ => FixtureType.Other
-                    };
+                        //Check whether CC row - if so default type to CC
+                        var typeNode = row.SelectSingleNode("td[1]");
+                        string type = (row.Attributes["class"].Value != TR_CountyCupRow) ?
+                            row.SelectSingleNode("td[1]").InnerText.Trim() :
+                            "CC";
 
-                    var fixture = new Fixture { Date = fdate, IsHome = isHome, Opponent = opponent, TeamId = team.Id, Team = team, FixtureType = ftype, Id = Guid.NewGuid() };
-                    var downloadFixture = new DownloadFixture { Id = Guid.NewGuid(), Date = fdate, IsHome = isHome, Opponent = opponent, FixtureType = ftype, Add = true };
-                    id++;
+                        string date = row.SelectSingleNode("./td[2]").InnerText.Trim().Substring(0, 8);
+                        string home = HtmlEntity.DeEntitize(row.SelectSingleNode($"td[contains(@class,'{HomeTeam}')]").InnerText.Trim());
+                        string away = HtmlEntity.DeEntitize(row.SelectSingleNode($"td[contains(@class,'{AwayTeam}')]").InnerText.Trim());
 
-                    fixtureList.Add((fixture, true));
-                    dFixtures.Add(downloadFixture);
+                        //string home = HtmlEntity.DeEntitize(row.SelectSingleNode("./td[3]").InnerText.Trim());
+                        //string away = HtmlEntity.DeEntitize(row.SelectSingleNode("./td[7]").InnerText.Trim());
+                        //string link = row.SelectSingleNode("./td[3]/a").Attributes[0].Value;
+                        //int index = link.IndexOf("=") + 1;
+                        //string fixtureId = link.Substring(index, link.Length - index);
+
+                        DateTime fdate = DateTime.Parse(date, new CultureInfo("en-GB"));
+                        bool isHome = home.ToLower().IndexOf("thame ") >= 0;
+                        bool isAway = away.ToLower().IndexOf("thame ") >= 0;
+
+                        //if thame in both home and away then try and differentiate based on last name
+                        if (isHome && isAway)
+                        {
+                            //find team colour / differentiator, i.e. last word in full name
+                            string[] names = team.Name.Split(' ');
+                            string name = names[names.Length - 1].ToLower();
+                            isHome = (home.ToLower().IndexOf(name) >= 0);
+                            isAway = (away.ToLower().IndexOf(name) >= 0);
+                        }
+
+                        string opponent = isHome ? away : home;
+                        FixtureType ftype = GetFixtureType(type);
+
+                        var fixture = new Fixture { Date = fdate, IsHome = isHome, Opponent = opponent, TeamId = team.Id, Team = team, FixtureType = ftype, Id = Guid.NewGuid() };
+                        var downloadFixture = new DownloadFixture { Id = Guid.NewGuid(), Date = fdate, IsHome = isHome, Opponent = opponent, FixtureType = ftype, Add = true };
+
+                        fixtureList.Add((fixture, true));
+                        dFixtures.Add(downloadFixture);
+                    }
+                }
+
+                //now find postponed rows
+                var postponedrows = htmlDoc.DocumentNode.SelectNodes($"//div[contains(@class,'{Table_Results}')]/table/tbody/tr");
+
+                if (postponedrows != null)
+                {
+                    foreach (var row in postponedrows)
+                    {
+                        string date = row.SelectSingleNode("./td[2]").InnerText.Trim().Substring(0, 8);
+                        string home = row.SelectSingleNode($"td[contains(@class,'{HomeTeam}')]").InnerText.Trim();
+                        string away = row.SelectSingleNode($"td[contains(@class,'{AwayTeam}')]").InnerText.Trim();
+
+                        var scoreNode = row.SelectSingleNode($"td[contains(@class,'{Score}')]");
+                        bool isPostponed = scoreNode.SelectSingleNode("a[contains(text(),'P')]") != null;
+                        if (isPostponed)
+                        {
+                            DateTime fdate = DateTime.Parse(date, new CultureInfo("en-GB"));
+                            bool isHome = home.ToLower().IndexOf("thame ") >= 0;
+                            string opponent = isHome ? away : home;
+                            FixtureType ftype = FixtureType.Postponed;
+
+                            var fixture = new Fixture { Date = fdate, IsHome = isHome, Opponent = opponent, TeamId = team.Id, Team = team, FixtureType = ftype, Id = Guid.NewGuid() };
+                            var downloadFixture = new DownloadFixture { Id = Guid.NewGuid(), Date = fdate, IsHome = isHome, Opponent = opponent, FixtureType = ftype, Add = true };
+
+                            fixtureList.Add((fixture, true));
+                            dFixtures.Add(downloadFixture);
+
+                        }
+                    }
+
                 }
 
             }
+
+            
 
             catch (Exception e)
             {
@@ -72,7 +130,26 @@ namespace FixtureManager.Models
             return dFixtures;
 
         }
+
+        private static FixtureType GetFixtureType(string type)
+        {
+            return type switch
+            {
+                "F" => FixtureType.Friendly,
+                "Cup" => FixtureType.Cup,
+                "CC" => FixtureType.CountyCup,
+                "L" => FixtureType.League,
+                "ONE" => FixtureType.League,
+                "TWO" => FixtureType.League,
+                "HL2N" => FixtureType.League,
+                "D3N" => FixtureType.League,
+                "VETP" => FixtureType.League,
+                "N" => FixtureType.League,
+                _ => FixtureType.Other
+            };
+        }
     }
+
 
     public class DownloadFixture
     {

@@ -62,10 +62,10 @@
                             Venue
                         </th>
                         <th>
-                            Opponent
+                            Type
                         </th>
                         <th>
-                            Type
+                            Opponent
                         </th>
                         <th>
                             Pitch
@@ -74,8 +74,8 @@
                             Start
                         </th>
                         @*<th>
-                                Contacts
-                            </th>*@
+            Contacts
+        </th>*@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <th></th>
@@ -108,10 +108,10 @@
                                         @Html.DisplayFor(modelItem => item.Venue)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Opponent)
+                                        @(Models.Extensions.ShortFixtureName(item.FixtureType))
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.FixtureType)
+                                        @Html.DisplayFor(modelItem => item.Opponent)
                                     </td>
                                     @if (item.IsAllocated)
                                     {

@@ -436,8 +436,11 @@ namespace FixtureManager.Models
         [Display(Name = "Uhlsport Hellenic League")]
         UHL,
         [Display(Name = "Aylesbury and District Football League")]
-        ADL
-       
+        ADL,
+        [Display(Name = "Spartan South Midlands")]
+        SSM,
+        [Display(Name = "Allied Counties League")]
+        AlliedCounties
     }
 
     public enum TeamSize
@@ -460,19 +463,5 @@ namespace FixtureManager.Models
     {
         One=1, Two=2, Three=3, Four=4, Five=5, Six=6, Seven=7, Eight =8, Nine=9, Ten=10, Red=20, White=21, Blue=22, Black=23, Green=24, Yellow=25, West = 70, South = 71, North = 72, East = 73, Championship = 80, Premier = 81, Other =100
     }
-
-    
+   
 }
-
-
-
-
-/*
-
-
-
-Rec 
-
-
-
-*/
