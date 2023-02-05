@@ -105,20 +105,6 @@ namespace FixtureManager.Pages.Teams
             return RedirectToPage("./Matchday",new { matchDayDate = gameweekStart.ToString("dd-MMM-yyyy")});
         }
 
-
-        public string GetRecIcon(FixtureRecMatchType recType)
-        {
-            return recType switch
-            {
-                FixtureRecMatchType.noFixture => "bi bi-x-circle text-danger",
-                FixtureRecMatchType.localFixtureOnly => "bi bi-journal-check text-success",
-                FixtureRecMatchType.localFixtureUnmatched => "bi bi-journal-x text-danger",
-                FixtureRecMatchType.fullTimeUnmatched => "bi bi-cloud-slash text-danger",               
-                FixtureRecMatchType.fullTimematched => "bi bi-cloud-check text-success",                               
-                _ => "bi bi-question-circle-fill text-danger    "
-            };
-
-        }
     }
 
 

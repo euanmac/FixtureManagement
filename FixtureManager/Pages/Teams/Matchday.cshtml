@@ -100,7 +100,7 @@
                                     @item.MatchDate.ToShortDateString()
                                 </td>
                                 <td>
-                                    <i class="@Model.GetRecIcon(item.RecStatus) h6" data-toggle="tooltip" data-original-title="@Html.DisplayFor(m=> item.RecStatus)"></i>
+                                    <i class="@item.GetRecIcon() h6" data-toggle="tooltip" data-original-title="@Html.DisplayFor(m=> item.RecStatus)"></i>
                                 </td>
                                 @if (item.RecStatus != Models.FixtureRecMatchType.noFixture)
                                 {

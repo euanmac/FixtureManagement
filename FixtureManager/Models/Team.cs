@@ -77,21 +77,7 @@ namespace FixtureManager.Models
                 .Where(f => (DateOnly.FromDateTime(f.Date) >= start && DateOnly.FromDateTime(f.Date) <= end))
                 .ToList();
 
-            //Check for matching fixtures on FullTime
-            var matchedRows = from f in fixtures
-                              join df in downloadFixtures
-                              on f.Date equals df.Date
-                              where (f.Opponent == df.Opponent) && (f.IsHome == df.IsHome)
-                              select new TeamReconiliationRow
-                              {
-                                  Team = this,
-                                  MatchDate = DateOnly.FromDateTime(f.Date),
-                                  RecStatus = FixtureRecMatchType.fullTimematched,
-                                  Opponent = f.Opponent,
-                                  FixtureType = f.FixtureType,
-                                  Venue = f.IsHome ? "H" : "A"
-                              };
-
+ 
             //If no local or fulltime fixtures then return rec row
             //Check for rows, if none, create empty row for team to represent no fixture
             if (downloadFixtures.Count == 0 && fixtures.Count == 0)

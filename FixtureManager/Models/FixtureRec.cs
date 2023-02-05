@@ -21,6 +21,24 @@ namespace FixtureManager.Models
         public TimeOnly Start { get; set; }
         public string FullTimeURL { get; set; }
         public FixtureType FixtureType { get; set; }
+
+        public string GetRecIcon()
+        {
+            bool isHome = (Venue == "H");
+            return RecStatus switch
+            {
+                FixtureRecMatchType.noFixture => "bi bi-x-circle text-danger",
+                FixtureRecMatchType.localFixtureOnly when (!IsAllocated && CanAllocate)  => "bi bi-journal-check text-warning",
+                FixtureRecMatchType.localFixtureOnly => "bi bi-journal-check text-success",
+                FixtureRecMatchType.localFixtureUnmatched => "bi bi-journal-x text-danger",
+                FixtureRecMatchType.fullTimeUnmatched => "bi bi-cloud-slash text-danger",
+                FixtureRecMatchType.fullTimematched when (!IsAllocated && CanAllocate) => "bi bi-cloud-check text-warning",
+                FixtureRecMatchType.fullTimematched => "bi bi-cloud-check text-success",
+
+                _ => "bi bi-question-circle-fill text-danger    "
+            };
+
+        }
     }
 
     public enum FixtureRecMatchType
