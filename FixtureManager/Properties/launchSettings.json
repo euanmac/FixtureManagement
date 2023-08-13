@@ -18,6 +18,7 @@
     },
     "FixtureManager": {
       "commandName": "Project",
+      "launchBrowser": true,
       "applicationUrl": "http://localhost:19449",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

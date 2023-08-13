@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using FixtureManager.Data;
 using FixtureManager.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
+
 
 namespace FixtureManager.Pages.Fixtures
 {
@@ -75,5 +77,43 @@ namespace FixtureManager.Pages.Fixtures
             //    .ThenBy(f => f.Team.AgeGroup);
             //Fixture.OrderBy
         }
+
+        public IActionResult OnGetExport()
+        {
+            //bool includeHome = VenueFilter != "A";
+            //bool includeAway = VenueFilter != "H";
+
+            Fixture = _context.Fixture
+               .OrderBy(f => f.Date)
+               .ThenBy(f => f.Team.AgeGroup)
+               .Include(f => f.Team)
+               .Include(f => f.FixtureAllocation)
+                   .ThenInclude(fa => fa.Pitch)
+               .Include(f => f.FixtureAllocation)
+                   .ThenInclude(fa => fa.Referee)
+               //.Where(f => (f.Date >= StartDateFilter && f.Date <= EndDateFilter))
+               //.Where(f => f.IsHome == IncludeHomeFilter || f.IsHome != IncludeAwayFilter)
+               .ToList();
+
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine("Date,Team,Location,Opponent,Type");
+                foreach (Fixture f in Fixture)
+                {
+                    String location = f.IsHome ? "H" : "A";
+                    stringBuilder.AppendLine($"{f.Date},{f.Team.DisplayName},{location},{f.Opponent},{f.FixtureType}");
+                }
+
+                return File(Encoding.UTF8.GetBytes(stringBuilder.ToString()), "text/csv", "fixtures.csv");
+            //List
+            //Fixture.OrderBy(f => f.Date)
+            //    .ThenBy(f => f.Team.AgeGroup);
+            //Fixture.OrderBy
+        }
+
+
+
     }
+ 
+
 }
+
