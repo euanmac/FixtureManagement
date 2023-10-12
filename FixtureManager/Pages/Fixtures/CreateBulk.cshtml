@@ -1,0 +1,91 @@
+@page
+@model FixtureManager.Pages.Fixtures.CreateBulkModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+<h4>Fixture</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (Model.ForTeam != null)
+        {
+            <input type="hidden" asp-for="ForTeam.Id" />
+            <label class="control-label">@Model.ForTeam.DisplayName</label>
+        }
+        else
+        {
+            <div class="form-group">
+                <label asp-for="ForTeam.DisplayName" class="control-label"></label>
+                <select asp-for="ForTeam.Id" class="form-control" asp-items="ViewBag.TeamIdList"></select>
+            </div>
+        }
+    </div>
+</div>
+<form method="post">
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fixtures[0].Date)
+                </th>
+                <th>
+                    Is Home
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fixtures[0].Opponent)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fixtures[0].FixtureType)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var fixture in Model.Fixtures)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" name="Fixtures.Index" value="@fixture.Id" />
+                        <input type="hidden" name="Fixtures[@fixture.Id].Id" value="@fixture.Id" />
+                        <input type="hidden" name="Fixtures[@fixture.Id].TeamId" value="@fixture.TeamId" />
+                        <input type="hidden" name="Fixtures[@fixture.Id].Date" value="@fixture.Date" />
+                        @Html.DisplayFor(model => fixture.Date)
+                    </td>
+                    <td>
+                        <input asp-for="@fixture.IsHome" name="Fixtures[@fixture.Id].IsHome"/>
+                    </td>
+                    <td>
+                        <input asp-for="@fixture.Opponent" name="Fixtures[@fixture.Id].Opponent"/>
+                        <span asp-validation-for="@fixture.Opponent" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input type="hidden" name="Fixtures[@fixture.Id].FixtureType" value="@fixture.FixtureType" />
+                        League
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+
+<div>
+    @if (Model.ForTeam != null)
+    {
+        <a asp-page=/Teams/Details asp-route-id="@Model.ForTeam.Id">Back to List</a> }
+    else
+    {
+        <a asp-page=./Index>Back to List</a>
+    }
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

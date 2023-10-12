@@ -23,11 +23,17 @@ namespace FixtureManager.Pages.Teams
         }
 
         [BindProperty]
+        public IList<Fixture> DownloadFixtures { get; set; }
+
+        [BindProperty]
         DateOnly MatchDay { get; set; }
+
         public DateOnly GameWeekStart { get; set; }
         public DateOnly GameWeekEnd { get; set; }
         public Dictionary<Team, List<TeamReconiliationRow>> FixtureRecResults { get; set; }
-
+        public int DownloadableCount { get
+            { return FixtureRecResults.Values.SelectMany(x => x).Where(x => x.RecStatus == FixtureRecMatchType.fullTimeUnmatched).Count(); }
+        }
         public async Task OnGetAsync(DateTime? matchDayDate)
         {
             if (matchDayDate is null)
@@ -70,20 +76,6 @@ namespace FixtureManager.Pages.Teams
                .ToList()
                .GroupBy(r => r.Team).ToDictionary(g => g.Key, g => g.ToList());
 
-            //Summarise Fixtures by date, home and away, unallocated
-            
-
-          
-        }
-
-        struct SummaryRow
-        {
-            DateOnly SummaryDate { get; set; }
-            int Home { get; set; }
-            int Away { get; set; }
-            int Allocated { get; set; }
-            int CanMatch { get; set; }
-            int Matched { get; set; }
         }
 
         public async Task<IActionResult> OnPostAsync(Guid teamId, string opponent, DateTime matchDate, string venue, FixtureType fixtureType, DateTime gameweekStart)
@@ -104,7 +96,17 @@ namespace FixtureManager.Pages.Teams
             _context.SaveChanges();
             return RedirectToPage("./Matchday",new { matchDayDate = gameweekStart.ToString("dd-MMM-yyyy")});
         }
+        
 
+        public async Task<IActionResult> OnPostDownloadAllAsync(DateTime gameweekStart)
+        {
+            foreach (Fixture f in DownloadFixtures) {
+                //Fixture f = new Fixture { TeamId = df, Date = df.Date, FixtureType = df.FixtureType, Opponent = df.Opponent, IsHome = df.IsHome, Team = Team };
+                _context.Fixture.Add(f);
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToPage("./Matchday", new { matchDayDate = gameweekStart.ToString("dd-MMM-yyyy") });
+        }
     }
 
 

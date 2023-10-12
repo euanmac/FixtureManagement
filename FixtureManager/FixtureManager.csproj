@@ -42,8 +42,6 @@
     <None Remove="Microsoft.AspNetCore.Identity.UI" />
     <None Remove="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     <None Remove="Pages\Bookings\" />
-    <None Remove="local.db-shm" />
-    <None Remove="local.db-wal" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Data\Seed\Fixture.csv" />

@@ -10,173 +10,187 @@
             $('[data-toggle="tooltip"]').tooltip({
                 placement: 'top'
             });
-        });
-    </script>
+        });</script>
 }
 
 <h2>Gameweek Summary</h2>
-<div class="fc fc-media-screen fc-direction-ltr fc-theme-standard">
-    <div class="fc-header-toolbar fc-toolbar fc-toolbar-ltr">
-        @*<div class="fc-toolbar-chunk">
-            <h2 class="fc-toolbar-title">@(Model.GameWeekStart.ToString("dd-MMM-yy")) to @(Model.GameWeekEnd.ToString("dd-MMM-yy"))</h2>
-        </div>*@
-        <div class="fc-toolbar-chunk">
-            <h2 class="fc-toolbar-title">@(Model.GameWeekStart.ToString("dddd, d MMMM yyyy")) to @(Model.GameWeekEnd.ToString("dddd, d MMMM yyyy"))</h2>
-        </div>
-        @*<div class="fc-toolbar-chunk">
-            <input id="filter-venue" value="true" checked type="checkbox" />
-            <label>Show Home only</label>
-        </div>*@
-        <div class="fc-toolbar-chunk">
-            <button class="fc-today-button fc-button fc-button-primary" type="button" onclick="location.href='./Matchday'">today</button>
-            <div class="fc-button-group">
-                <button class="fc-prevSat-button fc-button fc-button-primary" type="button" aria-label="prevSat" onclick="location.href='./Matchday?MatchdayDate=@(Model.GameWeekStart.AddDays(-7).ToString("dd-MMM-yyyy"))'">
-                    <span class="fc-icon fc-icon-chevron-left"></span>
-                </button>
-                <button class="fc-nextSat-button fc-button fc-button-primary" type="button" aria-label="nextSat" onclick="location.href='./Matchday?MatchdayDate=@(Model.GameWeekStart.AddDays(+7).ToString("dd-MMM-yyyy"))'">
-                    <span class="fc-icon fc-icon-chevron-right"></span>
-                </button>
+<form method="post">
+    <div class="fc fc-media-screen fc-direction-ltr fc-theme-standard">
+        <div class="fc-header-toolbar fc-toolbar fc-toolbar-ltr">
+            @*<div class="fc-toolbar-chunk">
+                    <h2 class="fc-toolbar-title">@(Model.GameWeekStart.ToString("dd-MMM-yy")) to @(Model.GameWeekEnd.ToString("dd-MMM-yy"))</h2>
+                </div>*@
+            <div class="fc-toolbar-chunk">
+                <h2 class="fc-toolbar-title">@(Model.GameWeekStart.ToString("dddd, d MMMM yyyy")) to @(Model.GameWeekEnd.ToString("dddd, d MMMM yyyy"))</h2>
             </div>
+            @*<div class="fc-toolbar-chunk">
+                    <input id="filter-venue" value="true" checked type="checkbox" />
+                    <label>Show Home only</label>
+                </div>*@
+            <div class="fc-toolbar-chunk">
+                <button class="fc-today-button fc-button fc-button-primary" type="button" onclick="location.href='./Matchday'">today</button>
+                <div class="fc-button-group">
+                    <button class="fc-prevSat-button fc-button fc-button-primary" type="button" aria-label="prevSat" onclick="location.href='./Matchday?MatchdayDate=@(Model.GameWeekStart.AddDays(-7).ToString("dd-MMM-yyyy"))'">
+                        <span class="fc-icon fc-icon-chevron-left"></span>
+                    </button>
+                    <button class="fc-nextSat-button fc-button fc-button-primary" type="button" aria-label="nextSat" onclick="location.href='./Matchday?MatchdayDate=@(Model.GameWeekStart.AddDays(+7).ToString("dd-MMM-yyyy"))'">
+                        <span class="fc-icon fc-icon-chevron-right"></span>
+                    </button>
+                </div>
 
+            </div>
         </div>
     </div>
-</div>
-<table class="table table-condensed">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="form-group">
+            <input type="submit" value="Download @(Model.DownloadableCount)" disabled="@(Model.DownloadableCount == 0)" class="btn btn-primary" asp-page-handler="DownloadAll" asp-route-gameweekStart="@(Model.GameWeekStart.ToString("dd-MMM-yyyy"))" />
+        </div>
+    }
+    <table class="table table-condensed">
+    </table>
 
-</table>
-    <form method="post">
-        <div id="demo" class="uncollapse">
-            <table class="table table-condensed">
-                <thead>
-                    <tr>
-                        <th>
-                            Team
-                        </th>
-                        <th>
-                            Date
-                        </th>
-                        <th>
-                            Status
-                        </th>
-                        <th>
-                            Venue
-                        </th>
-                        <th>
-                            Type
-                        </th>
-                        <th>
-                            Opponent
-                        </th>
-                        <th>
-                            Pitch
-                        </th>
-                        <th>
-                            Start
-                        </th>
-                        @*<th>
-            Contacts
-        </th>*@
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <th></th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var team in Model.FixtureRecResults.Keys)
+    <div id="demo" class="uncollapse">
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>
+                        Team
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Venue
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Opponent
+                    </th>
+                    <th>
+                        Pitch
+                    </th>
+                    <th>
+                        Start
+                    </th>
+                    @*<th>
+                            Contacts
+                        </th>*@
+                    @if (User.Identity.IsAuthenticated)
                     {
-                        var newRow = true;
-                        @foreach (var item in Model.FixtureRecResults[team])
-                        {
-                            <tr>
+                        <th></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var team in Model.FixtureRecResults.Keys)
+                {
+                    var newRow = true;
+                    @foreach (var item in Model.FixtureRecResults[team])
+                    {
+                        <tr>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.GroupDescription)*@
+                                @if (newRow)
+                                {
+                                    <a asp-page="./Details" asp-route-id="@item.Team.Id">@item.Team.DisplayName</a>
+                                }
+                            </td>
+                            <td>
+                                @item.MatchDate.ToShortDateString()
+                            </td>
+                            <td>
+                                <i class="@item.GetRecIcon() h6" data-toggle="tooltip" data-original-title="@Html.DisplayFor(m=> item.RecStatus)"></i>
+                            </td>
+                            @if (item.RecStatus != Models.FixtureRecMatchType.noFixture)
+                            {
                                 <td>
-                                    @*@Html.DisplayFor(modelItem => item.GroupDescription)*@
-                                    @if (newRow)
-                                    {
-                                        <a asp-page="./Details" asp-route-id="@item.Team.Id">@item.Team.DisplayName</a>
-                                    }
+                                    @Html.DisplayFor(modelItem => item.Venue)
                                 </td>
                                 <td>
-                                    @item.MatchDate.ToShortDateString()
+                                    @(Models.Extensions.ShortFixtureName(item.FixtureType))
                                 </td>
                                 <td>
-                                    <i class="@item.GetRecIcon() h6" data-toggle="tooltip" data-original-title="@Html.DisplayFor(m=> item.RecStatus)"></i>
+                                    @Html.DisplayFor(modelItem => item.Opponent)
                                 </td>
-                                @if (item.RecStatus != Models.FixtureRecMatchType.noFixture)
+                                @if (item.IsAllocated)
                                 {
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Venue)
+                                        @Html.DisplayFor(modelItem => item.Pitch)
                                     </td>
                                     <td>
-                                        @(Models.Extensions.ShortFixtureName(item.FixtureType))
+                                        @(item.Start.ToShortTimeString())
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Opponent)
-                                    </td>
-                                    @if (item.IsAllocated)
-                                    {
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Pitch)
-                                        </td>
-                                        <td>
-                                            @(item.Start.ToShortTimeString())
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td />
-
-                                        <td />
-                                    }
                                 }
                                 else
                                 {
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                }
+                                    <td />
 
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <td>
-                                        @if (item.RecStatus == Models.FixtureRecMatchType.fullTimeUnmatched)
-                                        {
-                                            <button type="submit" name="D" value="C" class="btn btn-link btn-sm p-0" asp-route-teamId="@item.Team.Id" asp-route-opponent="@item.Opponent"
-                                                    asp-route-matchDate="@(item.MatchDate.ToString("dd-MMM-yyyy"))" asp-route-venue="@item.Venue"
-                                                    asp-route-fixturetype="@( (int) item.FixtureType)" asp-route-gameweekStart="@(Model.GameWeekStart.ToString("dd-MMM-yyyy"))">
-                                                <i class="bi bi-cloud-arrow-down h6"></i>
-                                            </button>
-                                        }
-                                        @if (item.RecStatus != Models.FixtureRecMatchType.fullTimeUnmatched && item.RecStatus != Models.FixtureRecMatchType.noFixture)
-                                        {
-                                            <a asp-page="../Fixtures/Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
-                                            <a asp-page="../Fixtures/Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
-                                            @if (item.CanAllocate && item.IsAllocated)
-                                            {
-                                                <a asp-page="../FixtureAllocations/Edit" asp-route-id="@item.AllocationId"><i class="bi bi-clock"></i></a>
-                                            }
-                                            else if (item.CanAllocate && !item.IsAllocated)
-                                            {
-                                                <a asp-page="../FixtureAllocations/Create" asp-route-fixtureid="@item.Id"><i class="bi bi-clock"></i></a>
-                                            }
-                                        }
-
-                                        @*|*@
-                                        @*<a asp-page="./Delete" asp-route-id="@item.Team.Id"><i class="bi bi-trash"></i></a>*@
-                                    </td>
+                                    <td />
                                 }
-                                @{newRow = false;}
-                            </tr>
-                        }
+                            }
+                            else
+                            {
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                            }
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <td>
+
+                                    @if (item.RecStatus == Models.FixtureRecMatchType.fullTimeUnmatched)
+                                    {
+                                        @*Hidden fields for bulk download*@
+                                        <input type="hidden" name="DownloadFixtures.Index" value="@item.Id" />
+                                        <input type="hidden" name="DownloadFixtures[@item.Id].Id" value="@item.Id" />
+                                        <input type="hidden" name="DownloadFixtures[@item.Id].Date" value="@item.MatchDate" />
+                                        <input type="hidden" name="DownloadFixtures[@item.Id].IsHome" value="@(item.Venue == "H") " />
+                                        <input type="hidden" name="DownloadFixtures[@item.Id].Opponent" value="@item.Opponent" />
+                                        <input type="hidden" name="DownloadFixtures[@item.Id].FixtureType" value="@item.FixtureType" />
+                                        <input type="hidden" name="DownloadFixtures[@item.Id].TeamId" value="@team.Id" />
+                                        <button type="submit" name="D" value="C" class="btn btn-link btn-sm p-0" asp-route-teamId="@item.Team.Id" asp-route-opponent="@item.Opponent"
+                                                asp-route-matchDate="@(item.MatchDate.ToString("dd-MMM-yyyy"))" asp-route-venue="@item.Venue"
+                                                asp-route-fixturetype="@( (int) item.FixtureType)" asp-route-gameweekStart="@(Model.GameWeekStart.ToString("dd-MMM-yyyy"))">
+                                            <i class="bi bi-cloud-arrow-down h6"></i>
+                                        </button>
+                                    }
+                                    @if (item.RecStatus != Models.FixtureRecMatchType.fullTimeUnmatched && item.RecStatus != Models.FixtureRecMatchType.noFixture)
+                                    {
+                                        <a asp-page="../Fixtures/Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                                        <a asp-page="../Fixtures/Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                                        @if (item.CanAllocate && item.IsAllocated)
+                                        {
+                                            <a asp-page="../FixtureAllocations/Edit" asp-route-id="@item.AllocationId"><i class="bi bi-clock"></i></a>
+                                        }
+                                        else if (item.CanAllocate && !item.IsAllocated)
+                                        {
+                                            <a asp-page="../FixtureAllocations/Create" asp-route-fixtureid="@item.Id"><i class="bi bi-clock"></i></a>
+                                        }
+                                    }
+
+                                    @*|*@
+                                    @*<a asp-page="./Delete" asp-route-id="@item.Team.Id"><i class="bi bi-trash"></i></a>*@
+                                </td>
+                            }
+                            @{newRow = false;}
+                        </tr>
                     }
-                </tbody>
-            </table>
-        </div>
-    </form>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
