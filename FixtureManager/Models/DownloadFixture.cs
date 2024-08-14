@@ -144,6 +144,7 @@ namespace FixtureManager.Models
                 "HL2N" => FixtureType.League,
                 "D3N" => FixtureType.League,
                 "VETP" => FixtureType.League,
+                "PREM" => FixtureType.League,
                 "N" => FixtureType.League,
                 _ => FixtureType.Other
             };
