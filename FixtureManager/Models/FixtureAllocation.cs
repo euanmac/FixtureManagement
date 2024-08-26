@@ -2,6 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using CsvHelper.Configuration.Attributes;
 
+//Add  to model
+//Add to database - should be false
+
+
+
 namespace FixtureManager.Models
 {
     public class FixtureAllocation
@@ -16,6 +21,7 @@ namespace FixtureManager.Models
         [Required]
         [DisplayFormat(DataFormatString = "{0:HH\\:mm}")]
         public TimeSpan Duration { get; set; }
+        public bool IsApproved {get; set;}
 
         //Navigation Properties
         [Ignore]

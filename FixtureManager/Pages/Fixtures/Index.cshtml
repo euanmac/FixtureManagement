@@ -106,13 +106,20 @@
             <td>
                 @if (item.FixtureAllocation != null)
                 {
-                    <a asp-page="../FixtureAllocations/Edit" asp-route-id="@item.FixtureAllocation.Id">
-                        @Html.DisplayFor(modelItem => item.FixtureAllocation.Start)
-                    </a>
+                    @if (item.FixtureAllocation.IsApproved || User.Identity.IsAuthenticated) {
+                        <a asp-page="../FixtureAllocations/Edit" asp-route-id="@item.FixtureAllocation.Id">
+                            @Html.DisplayFor(modelItem => item.FixtureAllocation.Start)
+                        </a>
+                    }
                 }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FixtureAllocation.Pitch.Name)
+                @if (item.FixtureAllocation != null)
+                {
+                    @if (item.FixtureAllocation.IsApproved || User.Identity.IsAuthenticated) {
+                        @Html.DisplayFor(modelItem => item.FixtureAllocation.Pitch.Name)
+                    }
+                }
             </td>
             @*<td>
                 @Html.DisplayFor(modelItem => item.FixtureAllocation.Referee.FullName)

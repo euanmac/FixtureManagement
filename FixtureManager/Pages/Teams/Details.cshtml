@@ -118,13 +118,28 @@
                     @Html.DisplayFor(model => item.FixtureType)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.FixtureAllocation.Start)
+                    @if (item.FixtureAllocation != null)
+                    {
+                        @if (item.FixtureAllocation.IsApproved || User.Identity.IsAuthenticated) {
+                            @Html.DisplayFor(model => item.FixtureAllocation.Start)
+                        }
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.FixtureAllocation.End)
+                    @if (item.FixtureAllocation != null)
+                    {
+                        @if (item.FixtureAllocation.IsApproved || User.Identity.IsAuthenticated) {
+                            @Html.DisplayFor(model => item.FixtureAllocation.End)
+                        }
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.FixtureAllocation.Pitch.Name)
+                    @if (item.FixtureAllocation != null)
+                    {
+                        @if (item.FixtureAllocation.IsApproved || User.Identity.IsAuthenticated) {
+                            @Html.DisplayFor(model => item.FixtureAllocation.Pitch.Name)
+                        }
+                    }
                 </td>
                 @if (User.Identity.IsAuthenticated)
                 {
