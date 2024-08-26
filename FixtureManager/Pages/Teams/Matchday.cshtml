@@ -45,6 +45,7 @@
     {
         <div class="form-group">
             <input type="submit" value="Download @(Model.DownloadableCount)" disabled="@(Model.DownloadableCount == 0)" class="btn btn-primary" asp-page-handler="DownloadAll" asp-route-gameweekStart="@(Model.GameWeekStart.ToString("dd-MMM-yyyy"))" />
+            <input type="submit" value="Confirm All" class="btn btn-primary" asp-page-handler="ConfirmAll" asp-route-gameweekStart="@(Model.GameWeekStart.ToString("dd-MMM-yyyy"))" />
         </div>
     }
     <table class="table table-condensed">
@@ -78,9 +79,9 @@
                     <th>
                         Start
                     </th>
-                    @*<th>
-                            Contacts
-                        </th>*@
+                    <th>
+                        Confirmed
+                    </th>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <th></th>
@@ -126,26 +127,25 @@
                                     <td>
                                         @(item.Start.ToShortTimeString())
                                     </td>
+                                    <td>
+                                        @(item.IsAllocated && item.IsApproved ? "Yes" : "No")
+                                    </td>
                                 }
                                 else
                                 {
                                     <td />
-
+                                    <td />
                                     <td />
                                 }
                             }
                             else
                             {
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
+                                <td />
+                                <td />
+                                <td />
+                                <td />
+                                <td />
+                                <td />
                             }
 
                             @if (User.Identity.IsAuthenticated)
@@ -170,10 +170,14 @@
                                     }
                                     @if (item.RecStatus != Models.FixtureRecMatchType.fullTimeUnmatched && item.RecStatus != Models.FixtureRecMatchType.noFixture)
                                     {
+
                                         <a asp-page="../Fixtures/Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
                                         <a asp-page="../Fixtures/Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
                                         @if (item.CanAllocate && item.IsAllocated)
                                         {
+                                            @*Hidden fields for bulk confirmation*@
+                                            <input type="hidden" name="ConfirmAllocations.Index" value="@item.AllocationId" />
+                                            <input type="hidden" name="ConfirmAllocations[@item.AllocationId]" value="@item.AllocationId" />
                                             <a asp-page="../FixtureAllocations/Edit" asp-route-id="@item.AllocationId"><i class="bi bi-clock"></i></a>
                                         }
                                         else if (item.CanAllocate && !item.IsAllocated)

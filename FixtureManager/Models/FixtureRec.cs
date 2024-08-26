@@ -14,6 +14,7 @@ namespace FixtureManager.Models
         public bool IsAllocated { get; set; }
         public Guid AllocationId { get; set; }
         public bool CanAllocate { get; set; }
+        public bool IsApproved { get; set; }
         public string Venue { get; set; }
         public string Opponent { get; set; }
         public string Pitch { get; set; }

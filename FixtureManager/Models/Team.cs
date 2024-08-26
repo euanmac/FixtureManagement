@@ -102,8 +102,9 @@ namespace FixtureManager.Models
                         IsAllocated = f.IsAllocated,
                         AllocationId = f.IsAllocated ? f.FixtureAllocation.Id : Guid.Empty,
                         Pitch = f.IsAllocated ? f.FixtureAllocation.Pitch.Name : "",
-                        Start = f.IsAllocated ? TimeOnly.FromDateTime(f.FixtureAllocation.Start) : TimeOnly.MinValue
- 
+                        Start = f.IsAllocated ? TimeOnly.FromDateTime(f.FixtureAllocation.Start) : TimeOnly.MinValue,
+                        IsApproved = f.IsAllocated ? f.FixtureAllocation.IsApproved : false
+
                     };
 
                     //Check for downloaded fixture that matches

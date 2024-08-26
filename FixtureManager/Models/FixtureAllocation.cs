@@ -21,6 +21,7 @@ namespace FixtureManager.Models
         [Required]
         [DisplayFormat(DataFormatString = "{0:HH\\:mm}")]
         public TimeSpan Duration { get; set; }
+        [Display(Name = "Is Confirmed")]
         public bool IsApproved {get; set;}
 
         //Navigation Properties
