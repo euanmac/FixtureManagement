@@ -123,7 +123,7 @@ namespace FixtureManager.Pages.Teams
                 //Fixture f = new Fixture { TeamId = df, Date = df.Date, FixtureType = df.FixtureType, Opponent = df.Opponent, IsHome = df.IsHome, Team = Team };
                 FixtureAllocation fa = await _context.FixtureAlloctation.FirstAsync(fa => fa.Id == faId);
                 if (fa != null) {
-                    fa.IsApproved = true;
+                    fa.IsConfirmed = true;
                     await _context.SaveChangesAsync();
                 }
 

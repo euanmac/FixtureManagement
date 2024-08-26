@@ -120,7 +120,7 @@
                 <td>
                     @if (item.FixtureAllocation != null)
                     {
-                        @if (item.FixtureAllocation.IsApproved || User.Identity.IsAuthenticated) {
+                        @if (item.FixtureAllocation.IsConfirmed || User.Identity.IsAuthenticated) {
                             @Html.DisplayFor(model => item.FixtureAllocation.Start)
                         }
                     }
@@ -128,7 +128,7 @@
                 <td>
                     @if (item.FixtureAllocation != null)
                     {
-                        @if (item.FixtureAllocation.IsApproved || User.Identity.IsAuthenticated) {
+                        @if (item.FixtureAllocation.IsConfirmed || User.Identity.IsAuthenticated) {
                             @Html.DisplayFor(model => item.FixtureAllocation.End)
                         }
                     }
@@ -136,7 +136,7 @@
                 <td>
                     @if (item.FixtureAllocation != null)
                     {
-                        @if (item.FixtureAllocation.IsApproved || User.Identity.IsAuthenticated) {
+                        @if (item.FixtureAllocation.IsConfirmed || User.Identity.IsAuthenticated) {
                             @Html.DisplayFor(model => item.FixtureAllocation.Pitch.Name)
                         }
                     }

@@ -106,7 +106,7 @@
             <td>
                 @if (item.FixtureAllocation != null)
                 {
-                    @if (item.FixtureAllocation.IsApproved || User.Identity.IsAuthenticated) {
+                    @if (item.FixtureAllocation.IsConfirmed || User.Identity.IsAuthenticated) {
                         <a asp-page="../FixtureAllocations/Edit" asp-route-id="@item.FixtureAllocation.Id">
                             @Html.DisplayFor(modelItem => item.FixtureAllocation.Start)
                         </a>
@@ -116,7 +116,7 @@
             <td>
                 @if (item.FixtureAllocation != null)
                 {
-                    @if (item.FixtureAllocation.IsApproved || User.Identity.IsAuthenticated) {
+                    @if (item.FixtureAllocation.IsConfirmed || User.Identity.IsAuthenticated) {
                         @Html.DisplayFor(modelItem => item.FixtureAllocation.Pitch.Name)
                     }
                 }

@@ -35,7 +35,7 @@ namespace FixtureManager.Controllers
                     .ThenInclude(fa => fa.Pitch)
                 .Include(f => f.FixtureAllocation)
                 .Where(f => (f.FixtureAllocation != null && f.FixtureAllocation.Pitch != null) 
-                        && (f.FixtureAllocation.IsApproved || User.Identity.IsAuthenticated))
+                        && (f.FixtureAllocation.IsConfirmed || User.Identity.IsAuthenticated))
                 .Select(f => new Event(f, User.Identity.IsAuthenticated))
                 .ToListAsync();
 
@@ -71,7 +71,7 @@ namespace FixtureManager.Controllers
                     .ThenInclude(fa => fa.Pitch)
                 .Include(f => f.FixtureAllocation)
                 .Where(f => (f.FixtureAllocation != null && f.FixtureAllocation.Pitch != null) 
-                        && (f.FixtureAllocation.IsApproved || User.Identity.IsAuthenticated));
+                        && (f.FixtureAllocation.IsConfirmed || User.Identity.IsAuthenticated));
                         
             if (eventId != null)
             {
