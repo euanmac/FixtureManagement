@@ -1,4 +1,4 @@
 {
-"appService.defaultWebAppToDeploy": "/subscriptions/0ba3dbee-dee6-41ee-9499-c270dc1989e4/resourceGroups/BlazorTestEuan_group/providers/Microsoft.Web/sites/euanblazortest2",
+"appService.defaultWebAppToDeploy": "",
 "appService.deploySubpath": "FixtureManager/bin/Release/net6.0/publish"
 }

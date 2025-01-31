@@ -96,11 +96,11 @@ namespace FixtureManager.Pages.Fixtures
                .ToList();
 
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.AppendLine("Date,Team,Location,Opponent,Type");
+                stringBuilder.AppendLine("Date,Team,Location,Opponent,Type,TeamID");
                 foreach (Fixture f in Fixture)
                 {
                     String location = f.IsHome ? "H" : "A";
-                    stringBuilder.AppendLine($"{f.Date},{f.Team.DisplayName},{location},{f.Opponent},{f.FixtureType}");
+                    stringBuilder.AppendLine($"{f.Date},{f.Team.DisplayName},{location},{f.Opponent},{f.FixtureType},{f.Team.Id}");
                 }
 
                 return File(Encoding.UTF8.GetBytes(stringBuilder.ToString()), "text/csv", "fixtures.csv");

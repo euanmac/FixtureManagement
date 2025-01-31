@@ -113,7 +113,7 @@ namespace FixtureManager.Pages.Teams
                     .LoadAsync();
 
             }
-            //await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return RedirectToPage("./Matchday", new { matchDayDate = gameweekStart.ToString("dd-MMM-yyyy") });
         }
 

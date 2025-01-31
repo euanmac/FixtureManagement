@@ -390,3 +390,7 @@ FodyWeavers.xsd
 
 *.db
 
+.DS_Store
+FixtureManager/local.db-old
+FixtureManager/local.db-shm
+FixtureManager/local.db-wal
