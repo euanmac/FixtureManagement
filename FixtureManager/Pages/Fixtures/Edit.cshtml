@@ -1,5 +1,8 @@
 @page
 @model FixtureManager.Pages.Fixtures.EditModel
+@* --update Fixture set  Date = Date || ':00'   where date not like '%00:00:00'
+--select * from Fixture where date not like '%00:00:00'
+--select * from Fixture where date = '2025-01-12 00:00:00' *@
 
 @{
     ViewData["Title"] = "Edit";
